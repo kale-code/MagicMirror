@@ -30,7 +30,7 @@ if (process.env.MM_PORT) {
 
 // The next part is here to prevent a major exception when there
 // is no internet connection. This could probable be solved better.
-process.on("uncaughtException", function (err) {
+process.on("uncaughtException", err => {
 	console.log("Whoops! There was an uncaught exception...");
 	console.error(err);
 	console.log("MagicMirror will not quit, but it might be a good idea to check why this happened. Maybe no internet connection?");
@@ -49,7 +49,7 @@ var App = function() {
 	 * argument callback function - The callback function.
 	 */
 
-	var loadConfig = function(callback) {
+	var loadConfig = callback => {
 		console.log("Loading config ...");
 		var defaults = require(__dirname + "/defaults.js");
 
@@ -78,13 +78,13 @@ var App = function() {
 		}
 	};
 
-	var checkDeprecatedOptions = function(userConfig) {
+	var checkDeprecatedOptions = userConfig => {
 		var deprecated = require(global.root_path + "/js/deprecated.js");
 		var deprecatedOptions = deprecated.configs;
 
 		var usedDeprecated = [];
 
-		deprecatedOptions.forEach(function(option) {
+		deprecatedOptions.forEach(option => {
 			if (userConfig.hasOwnProperty(option)) {
 				usedDeprecated.push(option);
 			}
@@ -103,7 +103,7 @@ var App = function() {
 	 *
 	 * argument module string - The name of the module (including subpath).
 	 */
-	var loadModule = function(module, callback) {
+	var loadModule = (module, callback) => {
 
 		var elements = module.split("/");
 		var moduleName = elements[elements.length - 1];
@@ -152,13 +152,13 @@ var App = function() {
 	 *
 	 * argument module string - The name of the module (including subpath).
 	 */
-	var loadModules = function(modules, callback) {
+	var loadModules = (modules, callback) => {
 		console.log("Loading module helpers ...");
 
-		var loadNextModule = function() {
+		var loadNextModule = () => {
 			if (modules.length > 0) {
 				var nextModule = modules[0];
-				loadModule(nextModule, function() {
+				loadModule(nextModule, () => {
 					modules = modules.slice(1);
 					loadNextModule();
 				});
@@ -201,9 +201,9 @@ var App = function() {
 	 *
 	 * argument callback function - The callback function.
 	 */
-	this.start = function(callback) {
+	this.start = callback => {
 
-		loadConfig(function(c) {
+		loadConfig(c => {
 			config = c;
 
 			var modules = [];
@@ -215,8 +215,8 @@ var App = function() {
 				}
 			}
 
-			loadModules(modules, function() {
-				var server = new Server(config, function(app, io) {
+			loadModules(modules, () => {
+				var server = new Server(config, (app, io) => {
 					console.log("Server started ...");
 
 					for (var h in nodeHelpers) {
@@ -242,7 +242,7 @@ var App = function() {
 	 * This calls each node_helper's STOP() function, if it exists.
 	 * Added to fix #1056
 	 */
-	this.stop = function() {
+	this.stop = () => {
 		for (var h in nodeHelpers) {
 			var nodeHelper = nodeHelpers[h];
 			if (typeof nodeHelper.stop === "function") {
