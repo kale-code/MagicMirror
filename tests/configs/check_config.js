@@ -52,7 +52,7 @@ function checkConfigFile() {
 		if (err) { throw err; }
 		v.JSHINT(data); // Parser by jshint
 
-		if (v.JSHINT.errors.length == 0) {
+		if (v.JSHINT.errors.length === 0) {
 			console.log("Your configuration file doesn't contain syntax errors :)");
 			return true;
 		} else {
