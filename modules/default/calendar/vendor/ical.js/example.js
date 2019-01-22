@@ -2,7 +2,7 @@ var ical = require('ical')
   , months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 
-ical.fromURL('http://lanyrd.com/topics/nodejs/nodejs.ics', {}, function(err, data){
+ical.fromURL('http://lanyrd.com/topics/nodejs/nodejs.ics', {}, (err, data) => {
   for (var k in data){
     if (data.hasOwnProperty(k)){
       var ev = data[k]
