@@ -20,20 +20,14 @@ Module.register("alert",{
 		//shown at startup
 		welcome_message: false,
 	},
-	getScripts: function() {
-		return ["classie.js", "modernizr.custom.js", "notificationFx.js"];
-	},
-	getStyles: function() {
-		return ["ns-default.css"];
-	},
+	getScripts: () => ["classie.js", "modernizr.custom.js", "notificationFx.js"],
+	getStyles: () => ["ns-default.css"],
 	// Define required translations.
-	getTranslations: function() {
-		return {
-			en: "translations/en.json",
-			de: "translations/de.json",
-			nl: "translations/nl.json",
-		};
-	},
+	getTranslations: () => ({
+		en: "translations/en.json",
+		de: "translations/de.json",
+		nl: "translations/nl.json",
+	}),
 	show_notification: function(message) {
 		if (this.config.effect == "slide") {this.config.effect = this.config.effect + "-" + this.config.position;}
 		msg = "";
@@ -102,7 +96,7 @@ Module.register("alert",{
 		this.alerts[sender.name].show();
 		//Add timer to dismiss alert and overlay
 		if (params.timer) {
-			setTimeout(function() {
+			setTimeout(() => {
 				self.hide_alert(sender);
 			}, params.timer);
 		}
@@ -118,7 +112,7 @@ Module.register("alert",{
 			overlay.parentNode.removeChild(overlay);
 		}
 	},
-	setPosition: function(pos) {
+	setPosition: pos => {
 		//Add css to body depending on the set position for notifications
 		var sheet = document.createElement("style");
 		if (pos === "center") {sheet.innerHTML = ".ns-box {margin-left: auto; margin-right: auto;text-align: center;}";}
