@@ -18,12 +18,12 @@ var MMSocket = function(moduleName) {
 	self.moduleName = moduleName;
 
 	self.socket = io("http://localhost:8080");
-	self.socket.on("notification", function(data) {
+	self.socket.on("notification", data => {
 		MM.sendNotification(data.notification, data.payload, Socket);
 	});
 
 	return {
-		sendMessage: function(notification, payload, sender) {
+		sendMessage: (notification, payload, sender) => {
 			Log.log("Send socket message: " + notification);
 			self.socket.emit("notification", {
 				notification: notification,
