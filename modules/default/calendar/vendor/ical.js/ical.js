@@ -15,10 +15,10 @@
     this[name] = definition();
   }
 
-}('ical', function(){
+}('ical', () => {
 
    // Unescape Text re RFC 4.3.11
-  var text = function(t){
+  var text = t => {
     t = t || "";
     return (t
       .replace(/\\\,/g, ',')
@@ -28,7 +28,7 @@
     )
   }
 
-  var parseParams = function(p){
+  var parseParams = p => {
     var out = {}
     for (var i = 0; i<p.length; i++){
       if (p[i].indexOf('=') > -1){
@@ -41,7 +41,7 @@
     return out || sp
   }
 
-  var parseValue = function(val){
+  var parseValue = val => {
     if ('TRUE' === val)
       return true;
     
@@ -55,32 +55,30 @@
     return val;
   }
 
-  var storeParam = function(name){
-    return function(val, params, curr){
-      var data;
-      if (params && params.length && !(params.length==1 && params[0]==='CHARSET=utf-8')){
-        data = {params:parseParams(params), val:text(val)}
-      }
-      else
-        data = text(val)
+  var storeParam = name => (val, params, curr) => {
+  var data;
+  if (params && params.length && !(params.length==1 && params[0]==='CHARSET=utf-8')){
+    data = {params:parseParams(params), val:text(val)}
+  }
+  else
+    data = text(val)
 
-      var current = curr[name];
-      if (Array.isArray(current)){
-        current.push(data);
-        return curr;
-      }
-
-      if (current != null){
-        curr[name] = [current, data];
-        return curr;
-      }
-
-      curr[name] = data;
-      return curr
-    }
+  var current = curr[name];
+  if (Array.isArray(current)){
+    current.push(data);
+    return curr;
   }
 
-  var addTZ = function(dt, name, params){
+  if (current != null){
+    curr[name] = [current, data];
+    return curr;
+  }
+
+  curr[name] = data;
+  return curr
+}
+
+  var addTZ = (dt, name, params) => {
     var p = parseParams(params);
 
     if (params && p){
@@ -90,81 +88,74 @@
     return dt
   }
 
-  var dateParam = function(name){
-    return function(val, params, curr){
-
-      // Store as string - worst case scenario
-      storeParam(name)(val, undefined, curr)
-
-      if (params && params[0] === "VALUE=DATE") {
-        // Just Date
-
-        var comps = /^(\d{4})(\d{2})(\d{2})$/.exec(val);
-        if (comps !== null) {
-          // No TZ info - assume same timezone as this computer
-          curr[name] = new Date(
-            comps[1],
-            parseInt(comps[2], 10)-1,
-            comps[3]
-          );
-
-          return addTZ(curr, name, params);
-        }
-      }
-
-
-      //typical RFC date-time format
-      var comps = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})(Z)?$/.exec(val);
+  var dateParam = name => (val, params, curr) => {
+    // Store as string - worst case scenario
+    storeParam(name)(val, undefined, curr)
+    
+    if (params && params[0] === "VALUE=DATE") {
+      // Just Date
+    
+      var comps = /^(\d{4})(\d{2})(\d{2})$/.exec(val);
       if (comps !== null) {
-        if (comps[7] == 'Z'){ // GMT
-          curr[name] = new Date(Date.UTC(
-            parseInt(comps[1], 10),
-            parseInt(comps[2], 10)-1,
-            parseInt(comps[3], 10),
-            parseInt(comps[4], 10),
-            parseInt(comps[5], 10),
-            parseInt(comps[6], 10 )
-          ));
-          // TODO add tz
-        } else {
-          curr[name] = new Date(
-            parseInt(comps[1], 10),
-            parseInt(comps[2], 10)-1,
-            parseInt(comps[3], 10),
-            parseInt(comps[4], 10),
-            parseInt(comps[5], 10),
-            parseInt(comps[6], 10)
-          );
-        }
+        // No TZ info - assume same timezone as this computer
+        curr[name] = new Date(
+          comps[1],
+          parseInt(comps[2], 10)-1,
+          comps[3]
+        );
+    
+        return addTZ(curr, name, params);
       }
-
-      return addTZ(curr, name, params)
     }
-  }
-
-  var exdateParam = function(name){
-    return function(val, params, curr){
-      var date = dateParam(name)(val, params, curr);
-      if (date.exdates === undefined) {
-        date.exdates = [];
+    
+    
+    //typical RFC date-time format
+    var comps = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})(Z)?$/.exec(val);
+    if (comps !== null) {
+      if (comps[7] == 'Z'){ // GMT
+        curr[name] = new Date(Date.UTC(
+          parseInt(comps[1], 10),
+          parseInt(comps[2], 10)-1,
+          parseInt(comps[3], 10),
+          parseInt(comps[4], 10),
+          parseInt(comps[5], 10),
+          parseInt(comps[6], 10 )
+        ));
+        // TODO add tz
+      } else {
+        curr[name] = new Date(
+          parseInt(comps[1], 10),
+          parseInt(comps[2], 10)-1,
+          parseInt(comps[3], 10),
+          parseInt(comps[4], 10),
+          parseInt(comps[5], 10),
+          parseInt(comps[6], 10)
+        );
       }
-      date.exdates.push(date.exdate);
-      return date;
     }
+    
+    return addTZ(curr, name, params)
   }
 
-  var geoParam = function(name){
-    return function(val, params, curr){
-      storeParam(val, params, curr)
-      var parts = val.split(';');
-      curr[name] = {lat:Number(parts[0]), lon:Number(parts[1])};
-      return curr
+  var exdateParam = name => (val, params, curr) => {
+    var date = dateParam(name)(val, params, curr);
+    if (date.exdates === undefined) {
+      date.exdates = [];
     }
+    date.exdates.push(date.exdate);
+    return date;
   }
 
-  var categoriesParam = function (name) {
+  var geoParam = name => (val, params, curr) => {
+    storeParam(val, params, curr)
+    var parts = val.split(';');
+    curr[name] = {lat:Number(parts[0]), lon:Number(parts[1])};
+    return curr
+  }
+
+  var categoriesParam = name => {
     var separatorPattern = /\s*,\s*/g;
-    return function (val, params, curr) {
+    return (val, params, curr) => {
       storeParam(val, params, curr)
       if (curr[name] === undefined)
         curr[name] = val ? val.split(separatorPattern) : []
@@ -175,7 +166,7 @@
     }
   }
 
-  var addFBType = function(fb, params){
+  var addFBType = (fb, params) => {
     var p = parseParams(params);
 
     if (params && p){
@@ -185,35 +176,33 @@
     return fb;
   }
 
-  var freebusyParam = function (name) {
-    return function(val, params, curr){
-      var fb = addFBType({}, params);
-      curr[name] = curr[name] || []
-      curr[name].push(fb);
+  var freebusyParam = name => (val, params, curr) => {
+    var fb = addFBType({}, params);
+    curr[name] = curr[name] || []
+    curr[name].push(fb);
 
-      storeParam(val, params, fb);
+    storeParam(val, params, fb);
 
-      var parts = val.split('/');
+    var parts = val.split('/');
 
-      ['start', 'end'].forEach(function (name, index) {
-        dateParam(name)(parts[index], params, fb);
-      });
+    ['start', 'end'].forEach((name, index) => {
+      dateParam(name)(parts[index], params, fb);
+    });
 
-      return curr;
-    }
+    return curr;
   }
 
   return {
 
 
     objectHandlers : {
-      'BEGIN' : function(component, params, curr, stack){
+      'BEGIN' : (component, params, curr, stack) => {
           stack.push(curr)
 
           return {type:component, params:params}
         }
 
-      , 'END' : function(component, params, curr, stack){
+      , 'END' : (component, params, curr, stack) => {
         // prevents the need to search the root of the tree for the VCALENDAR object
         if (component === "VCALENDAR") {
             //scan all high level object in curr and drop all strings
