@@ -134,7 +134,7 @@ Module.register("compliments", {
 		xobj.overrideMimeType("application/json");
 		xobj.open("GET", path, true);
 		xobj.onreadystatechange = function() {
-			if (xobj.readyState == 4 && xobj.status == "200") {
+			if (xobj.readyState === 4 && xobj.status === "200") {
 				callback(xobj.responseText);
 			}
 		};
@@ -194,7 +194,7 @@ Module.register("compliments", {
 
 	// Override notification handler.
 	notificationReceived: function(notification, payload, sender) {
-		if (notification == "CURRENTWEATHER_DATA") {
+		if (notification === "CURRENTWEATHER_DATA") {
 			this.setCurrentWeatherType(payload.data);
 		}
 	},
