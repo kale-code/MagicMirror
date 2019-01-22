@@ -50,17 +50,13 @@ Module.register("calendar", {
 	},
 
 	// Define required scripts.
-	getStyles: function () {
-		return ["calendar.css", "font-awesome5.css", "font-awesome5.v4shims.css"];
-	},
+	getStyles: () => ["calendar.css", "font-awesome5.css", "font-awesome5.v4shims.css"],
 
 	// Define required scripts.
-	getScripts: function () {
-		return ["moment.js"];
-	},
+	getScripts: () => ["moment.js"],
 
 	// Define required translations.
-	getTranslations: function () {
+	getTranslations: () => {
 		// The translations for the default modules are defined in the core translation files.
 		// Therefor we can just return false. Otherwise we should have returned a dictionary.
 		// If you're trying to build your own module including translations, check out the documentation.
@@ -383,7 +379,7 @@ Module.register("calendar", {
 	 * @param {number} timeFormat Specifies either 12 or 24 hour time format
 	 * @returns {moment.LocaleSpecification}
 	 */
-	getLocaleSpecification: function(timeFormat) {
+	getLocaleSpecification: timeFormat => {
 		switch (timeFormat) {
 		case 12: {
 			return { longDateFormat: {LT: "h:mm A"} };
@@ -451,15 +447,13 @@ Module.register("calendar", {
 			}
 		}
 
-		events.sort(function (a, b) {
-			return a.startDate - b.startDate;
-		});
+		events.sort((a, b) => a.startDate - b.startDate);
 
 		return events.slice(0, this.config.maximumEntries);
 	},
 
 
-	listContainsEvent: function(eventList, event){
+	listContainsEvent: (eventList, event) => {
 		for(var evt of eventList){
 			if(evt.title === event.title && parseInt(evt.startDate) === parseInt(event.startDate)){
 				return true;
@@ -586,7 +580,7 @@ Module.register("calendar", {
 	 * @param {boolean} wrapEvents Wrap the text after the line has reached maxLength
 	 * @returns {string} The shortened string
 	 */
-	shorten: function (string, maxLength, wrapEvents) {
+	shorten: (string, maxLength, wrapEvents) => {
 		if (typeof string !== "string") {
 			return "";
 		}
@@ -625,9 +619,7 @@ Module.register("calendar", {
 	 * Return capitalized string
 	 */
 
-	capFirst: function (string) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
-	},
+	capFirst: string => string.charAt(0).toUpperCase() + string.slice(1),
 
 	/* titleTransform(title)
 	 * Transforms the title of an event for usage.
@@ -672,9 +664,7 @@ Module.register("calendar", {
 			}
 		}
 
-		eventList.sort(function(a,b) {
-			return a.startDate - b.startDate;
-		});
+		eventList.sort((a,b) => a.startDate - b.startDate);
 
 		this.sendNotification("CALENDAR_EVENTS", eventList);
 
