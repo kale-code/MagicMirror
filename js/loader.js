@@ -6,7 +6,7 @@
  * MIT Licensed.
  */
 
-var Loader = (function() {
+var Loader = (() => {
 
 	/* Create helper valiables */
 
@@ -19,14 +19,14 @@ var Loader = (function() {
 	/* loadModules()
 	 * Loops thru all modules and requests load for every module.
 	 */
-	var loadModules = function() {
+	var loadModules = () => {
 
 		var moduleData = getModuleData();
 
-		var loadNextModule = function() {
+		var loadNextModule = () => {
 			if (moduleData.length > 0) {
 				var nextModule = moduleData[0];
-				loadModule(nextModule, function() {
+				loadModule(nextModule, () => {
 					moduleData = moduleData.slice(1);
 					loadNextModule();
 				});
@@ -35,7 +35,7 @@ var Loader = (function() {
 				// This is done after all the modules so we can
 				// overwrite all the defined styles.
 
-				loadFile(config.customCss, function() {
+				loadFile(config.customCss, () => {
 					// custom.css loaded. Start all modules.
 					startModules();
 				});
@@ -49,7 +49,7 @@ var Loader = (function() {
 	/* startModules()
 	 * Loops thru all modules and requests start for every module.
 	 */
-	var startModules = function() {
+	var startModules = () => {
 		for (var m in moduleObjects) {
 			var module = moduleObjects[m];
 			module.start();
@@ -64,16 +64,14 @@ var Loader = (function() {
 	 *
 	 * return array - module data as configured in config
 	 */
-	var getAllModules = function() {
-		return config.modules;
-	};
+	var getAllModules = () => config.modules;
 
 	/* getModuleData()
 	 * Generate array with module information including module paths.
 	 *
 	 * return array - Module information.
 	 */
-	var getModuleData = function() {
+	var getModuleData = () => {
 		var modules = getAllModules();
 		var moduleFiles = [];
 
@@ -116,13 +114,13 @@ var Loader = (function() {
 	 * argument callback function - Function called when done.
 	 * argument module object - Information about the module we want to load.
 	 */
-	var loadModule = function(module, callback) {
+	var loadModule = (module, callback) => {
 		var url = module.path + "/" + module.file;
 
-		var afterLoad = function() {
+		var afterLoad = () => {
 			var moduleObject = Module.create(module.name);
 			if (moduleObject) {
-				bootstrapModule(module, moduleObject, function() {
+				bootstrapModule(module, moduleObject, () => {
 					callback();
 				});
 			} else {
@@ -133,7 +131,7 @@ var Loader = (function() {
 		if (loadedModuleFiles.indexOf(url) !== -1) {
 			afterLoad();
 		} else {
-			loadFile(url, function() {
+			loadFile(url, () => {
 				loadedModuleFiles.push(url);
 				afterLoad();
 			});
@@ -148,16 +146,16 @@ var Loader = (function() {
 	 * argument mObj object - Modules instance.
 	 * argument callback function - Function called when done.
 	 */
-	var bootstrapModule = function(module, mObj, callback) {
+	var bootstrapModule = (module, mObj, callback) => {
 		Log.info("Bootstrapping module: " + module.name);
 
 		mObj.setData(module);
 
-		mObj.loadScripts(function() {
+		mObj.loadScripts(() => {
 			Log.log("Scripts loaded for: " + module.name);
-			mObj.loadStyles(function() {
+			mObj.loadStyles(() => {
 				Log.log("Styles loaded for: " + module.name);
-				mObj.loadTranslations(function() {
+				mObj.loadTranslations(() => {
 					Log.log("Translations loaded for: " + module.name);
 					moduleObjects.push(mObj);
 					callback();
@@ -173,7 +171,7 @@ var Loader = (function() {
 	 * argument fileName string - Path of the file we want to load.
 	 * argument callback function - Function called when done.
 	 */
-	var loadFile = function(fileName, callback) {
+	var loadFile = (fileName, callback) => {
 
 		var extension =  fileName.slice((Math.max(0, fileName.lastIndexOf(".")) || Infinity) + 1);
 
@@ -183,10 +181,10 @@ var Loader = (function() {
 			var script = document.createElement("script");
 			script.type = "text/javascript";
 			script.src = fileName;
-			script.onload = function() {
+			script.onload = () => {
 				if (typeof callback === "function") {callback();}
 			};
-			script.onerror = function() {
+			script.onerror = () => {
 				console.error("Error on loading script:", fileName);
 				if (typeof callback === "function") {callback();}
 			};
@@ -199,10 +197,10 @@ var Loader = (function() {
 			stylesheet.rel = "stylesheet";
 			stylesheet.type = "text/css";
 			stylesheet.href = fileName;
-			stylesheet.onload = function() {
+			stylesheet.onload = () => {
 				if (typeof callback === "function") {callback();}
 			};
-			stylesheet.onerror = function() {
+			stylesheet.onerror = () => {
 				console.error("Error on loading stylesheet:", fileName);
 				if (typeof callback === "function") {callback();}
 			};
@@ -219,7 +217,7 @@ var Loader = (function() {
 		/* loadModules()
 		 * Load all modules as defined in the config.
 		 */
-		loadModules: function() {
+		loadModules: () => {
 			loadModules();
 		},
 
@@ -231,7 +229,7 @@ var Loader = (function() {
 		 * argument module Module Object - the module that calls the loadFile function.
 		 * argument callback function - Function called when done.
 		 */
-		loadFile: function(fileName, module, callback) {
+		loadFile: (fileName, module, callback) => {
 
 			if (loadedFiles.indexOf(fileName.toLowerCase()) !== -1) {
 				Log.log("File already loaded: " + fileName);
