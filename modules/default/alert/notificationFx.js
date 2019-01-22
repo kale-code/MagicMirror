@@ -9,7 +9,7 @@
  * http://www.codrops.com
  */
 // jscs:disable
-;(function(window) {
+;(window => {
 
 	"use strict";
 
@@ -70,8 +70,8 @@
 		ttl: 6000,
 		al_no: "ns-box",
 		// callbacks
-		onClose: function() { return false; },
-		onOpen: function() { return false; }
+		onClose: () => false,
+		onOpen: () => false
 	};
 
 	/**
@@ -93,7 +93,7 @@
 		// dismiss after [options.ttl]ms
 		var self = this;
 		if (this.options.ttl) {
-			this.dismissttl = setTimeout(function() {
+			this.dismissttl = setTimeout(() => {
 			if (self.active) {
 				self.dismiss();
 			}
@@ -110,7 +110,7 @@
 	NotificationFx.prototype._initEvents = function() {
 		var self = this;
 		// dismiss notification by tapping on it if someone has a touchscreen
-		this.ntf.querySelector(".ns-box-inner").addEventListener("click", function() { self.dismiss(); });
+		this.ntf.querySelector(".ns-box-inner").addEventListener("click", () => { self.dismiss(); });
 	};
 
 	/**
@@ -131,7 +131,7 @@
 		this.active = false;
 		clearTimeout(this.dismissttl);
 		classie.remove(this.ntf, "ns-show");
-		setTimeout(function() {
+		setTimeout(() => {
 			classie.add(self.ntf, "ns-hide");
 
 			// callback
