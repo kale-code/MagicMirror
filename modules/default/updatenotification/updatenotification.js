@@ -58,14 +58,14 @@ Module.register("updatenotification", {
 			icon.innerHTML = "&nbsp;";
 			message.appendChild(icon);
 
-			var updateInfoKeyName = this.status.behind == 1 ? "UPDATE_INFO_SINGLE" : "UPDATE_INFO_MULTIPLE";
+			var updateInfoKeyName = this.status.behind === 1 ? "UPDATE_INFO_SINGLE" : "UPDATE_INFO_MULTIPLE";
 			var subtextHtml = this.translate(updateInfoKeyName, {
 				COMMIT_COUNT: this.status.behind,
 				BRANCH_NAME: this.status.current
 			});
 
 			var text = document.createElement("span");
-			if (this.status.module == "default") {
+			if (this.status.module === "default") {
 				text.innerHTML = this.translate("UPDATE_NOTIFICATION");
 				subtextHtml = this.diffLink(subtextHtml);
 			} else {
