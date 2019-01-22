@@ -325,7 +325,7 @@ var MM = (function() {
 
 			var showWrapper = false;
 			Array.prototype.forEach.call(moduleWrappers, function(moduleWrapper) {
-				if (moduleWrapper.style.position == "" || moduleWrapper.style.position == "static") {
+				if (moduleWrapper.style.position === "" || moduleWrapper.style.position === "static") {
 					showWrapper = true;
 				}
 			});
@@ -554,7 +554,7 @@ var MM = (function() {
 })();
 
 // Add polyfill for Object.assign.
-if (typeof Object.assign != "function") {
+if (typeof Object.assign !== "function") {
 	(function() {
 		Object.assign = function(target) {
 			"use strict";
