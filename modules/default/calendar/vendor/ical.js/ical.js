@@ -58,7 +58,7 @@
   var storeParam = function(name){
     return function(val, params, curr){
       var data;
-      if (params && params.length && !(params.length==1 && params[0]==='CHARSET=utf-8')){
+      if (params && params.length && !(params.length===1 && params[0]==='CHARSET=utf-8')){
         data = {params:parseParams(params), val:text(val)}
       }
       else
@@ -116,7 +116,7 @@
       //typical RFC date-time format
       var comps = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})(Z)?$/.exec(val);
       if (comps !== null) {
-        if (comps[7] == 'Z'){ // GMT
+        if (comps[7] === 'Z'){ // GMT
           curr[name] = new Date(Date.UTC(
             parseInt(comps[1], 10),
             parseInt(comps[2], 10)-1,
