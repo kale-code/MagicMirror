@@ -11,7 +11,7 @@
 /*jshint browser: true, strict: true, undef: true */
 /*global define: false */
 
-(function(window) {
+(window => {
 
 "use strict";
 
@@ -26,25 +26,21 @@ function classReg(className) {
 var hasClass, addClass, removeClass;
 
 if ("classList" in document.documentElement) {
-	hasClass = function(elem, c) {
-		return elem.classList.contains(c);
-	};
-	addClass = function(elem, c) {
+	hasClass = (elem, c) => elem.classList.contains(c);
+	addClass = (elem, c) => {
 		elem.classList.add(c);
 	};
-	removeClass = function(elem, c) {
+	removeClass = (elem, c) => {
 		elem.classList.remove(c);
 	};
 } else {
-	hasClass = function(elem, c) {
-		return classReg(c).test(elem.className);
-	};
-	addClass = function(elem, c) {
+	hasClass = (elem, c) => classReg(c).test(elem.className);
+	addClass = (elem, c) => {
 		if (!hasClass(elem, c)) {
 			elem.className = elem.className + " " + c;
 		}
 	};
-	removeClass = function(elem, c) {
+	removeClass = (elem, c) => {
 		elem.className = elem.className.replace(classReg(c), " ");
 	};
 }
