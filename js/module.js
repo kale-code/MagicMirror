@@ -35,8 +35,9 @@ var Module = Class.extend({
 	/* init()
 	 * Is called when the module is instantiated.
 	 */
-	init: function () {
+	init: () => {
 		//Log.log(this.defaults);
+
 	},
 
 	/* start()
@@ -51,27 +52,21 @@ var Module = Class.extend({
 	 *
 	 * return Array<String> - An array with filenames.
 	 */
-	getScripts: function () {
-		return [];
-	},
+	getScripts: () => [],
 
 	/* getStyles()
 	 * Returns a list of stylesheets the module requires to be loaded.
 	 *
 	 * return Array<String> - An array with filenames.
 	 */
-	getStyles: function () {
-		return [];
-	},
+	getStyles: () => [],
 
 	/* getTranslations()
 	 * Returns a map of translation files the module requires to be loaded.
 	 *
 	 * return Map<String, String> - A map with langKeys and filenames.
 	 */
-	getTranslations: function () {
-		return false;
-	},
+	getTranslations: () => false,
 
 	/* getDom()
 	 * This method generates the dom which needs to be displayed. This method is called by the Magic Mirror core.
@@ -82,7 +77,7 @@ var Module = Class.extend({
 	 */
 	getDom: function () {
 		var self = this;
-		return new Promise(function(resolve) {
+		return new Promise(resolve => {
 			var div = document.createElement("div");
 			var template = self.getTemplate();
 			var templateData = self.getTemplateData();
@@ -90,7 +85,7 @@ var Module = Class.extend({
 			// Check to see if we need to render a template string or a file.
 			if (/^.*((\.html)|(\.njk))$/.test(template)) {
 				// the template is a filename
-				self.nunjucksEnvironment().render(template, templateData, function (err, res) {
+				self.nunjucksEnvironment().render(template, templateData, (err, res) => {
 					if (err) {
 						Log.error(err)
 					}
@@ -137,9 +132,7 @@ var Module = Class.extend({
 	 *
 	 * return Object
 	 */
-	getTemplateData: function () {
-		return {}
-	},
+	getTemplateData: () => { },
 
 	/* notificationReceived(notification, payload, sender)
 	 * This method is called when a notification arrives.
@@ -174,9 +167,7 @@ var Module = Class.extend({
 			trimBlocks: true,
 			lstripBlocks: true
 		});
-		this._nunjucksEnvironment.addFilter("translate", function(str) {
-			return self.translate(str)
-		});
+		this._nunjucksEnvironment.addFilter("translate", str => self.translate(str));
 
 		return this._nunjucksEnvironment;
 	},
@@ -242,7 +233,7 @@ var Module = Class.extend({
 		}
 
 		var self = this;
-		this._socket.setNotificationCallback(function (notification, payload) {
+		this._socket.setNotificationCallback((notification, payload) => {
 			self.socketNotificationReceived(notification, payload);
 		});
 
@@ -288,10 +279,10 @@ var Module = Class.extend({
 		var self = this;
 		var dependencies = this[funcName]();
 
-		var loadNextDependency = function () {
+		var loadNextDependency = () => {
 			if (dependencies.length > 0) {
 				var nextDependency = dependencies[0];
-				Loader.loadFile(nextDependency, self, function () {
+				Loader.loadFile(nextDependency, self, () => {
 					dependencies = dependencies.slice(1);
 					loadNextDependency();
 				});
@@ -324,7 +315,7 @@ var Module = Class.extend({
 			// If a translation file is set, load it and then also load the fallback translation file.
 			// Otherwise only load the fallback translation file.
 			if (translationFile !== undefined && translationFile !== translationsFallbackFile) {
-				Translator.load(self, translationFile, false, function () {
+				Translator.load(self, translationFile, false, () => {
 					Translator.load(self, translationsFallbackFile, true, callback);
 				});
 			} else {
@@ -388,14 +379,14 @@ var Module = Class.extend({
 	hide: function (speed, callback, options) {
 		if (typeof callback === "object") {
 			options = callback;
-			callback = function () { };
+			callback = () => { };
 		}
 
-		callback = callback || function () { };
+		callback = callback || () => { };
 		options = options || {};
 
 		var self = this;
-		MM.hideModule(self, speed, function () {
+		MM.hideModule(self, speed, () => {
 			self.suspend();
 			callback();
 		}, options);
@@ -411,10 +402,10 @@ var Module = Class.extend({
 	show: function (speed, callback, options) {
 		if (typeof callback === "object") {
 			options = callback;
-			callback = function () { };
+			callback = () => { };
 		}
 
-		callback = callback || function () { };
+		callback = callback || () => { };
 		options = options || {};
 
 		this.resume();
@@ -424,7 +415,7 @@ var Module = Class.extend({
 
 Module.definitions = {};
 
-Module.create = function (name) {
+Module.create = name => {
 
 	// Make sure module definition is available.
 	if (!Module.definitions[name]) {
@@ -463,7 +454,7 @@ function cmpVersions(a, b) {
 	return segmentsA.length - segmentsB.length;
 }
 
-Module.register = function (name, moduleDefinition) {
+Module.register = (name, moduleDefinition) => {
 
 	if (moduleDefinition.requiresVersion) {
 		Log.log("Check MagicMirror version for module '" + name + "' - Minimum version:  " + moduleDefinition.requiresVersion + " - Current version: " + version);
