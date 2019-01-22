@@ -67,7 +67,7 @@ var App = function() {
 			var config = Object.assign(defaults, c);
 			callback(config);
 		} catch (e) {
-			if (e.code == "ENOENT") {
+			if (e.code === "ENOENT") {
 				console.error(Utils.colors.error("WARNING! Could not find config file. Please create one. Starting with default configuration."));
 			} else if (e instanceof ReferenceError || e instanceof SyntaxError) {
 				console.error(Utils.colors.error("WARNING! Could not validate config file. Please correct syntax errors. Starting with default configuration."));
