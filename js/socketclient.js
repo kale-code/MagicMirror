@@ -9,7 +9,7 @@ var MMSocket = function(moduleName) {
 
 	// Private Methods
 	self.socket = io("/" + self.moduleName);
-	var notificationCallback = function() {};
+	var notificationCallback = () => {};
 
 	var onevent = self.socket.onevent;
 	self.socket.onevent = function(packet) {
@@ -20,18 +20,18 @@ var MMSocket = function(moduleName) {
 	};
 
 	// register catch all.
-	self.socket.on("*", function(notification, payload) {
+	self.socket.on("*", (notification, payload) => {
 		if (notification !== "*") {
 			notificationCallback(notification, payload);
 		}
 	});
 
 	// Public Methods
-	this.setNotificationCallback = function(callback) {
+	this.setNotificationCallback = callback => {
 		notificationCallback = callback;
 	};
 
-	this.sendNotification = function(notification, payload) {
+	this.sendNotification = (notification, payload) => {
 		if (typeof payload === "undefined") {
 			payload = {};
 		}
