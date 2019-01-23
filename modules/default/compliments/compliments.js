@@ -43,9 +43,7 @@ Module.register("compliments", {
 	currentWeatherType: "",
 
 	// Define required scripts.
-	getScripts: function() {
-		return ["moment.js"];
-	},
+	getScripts: () => ["moment.js"],
 
 	// Define start sequence.
 	start: function() {
@@ -55,14 +53,14 @@ Module.register("compliments", {
 
 		var self = this;
 		if (this.config.remoteFile != null) {
-			this.complimentFile(function(response) {
+			this.complimentFile(response => {
 				self.config.compliments = JSON.parse(response);
 				self.updateDom();
 			});
 		}
 
 		// Schedule update timer.
-		setInterval(function() {
+		setInterval(() => {
 			self.updateDom(self.config.fadeSpeed);
 		}, this.config.updateInterval);
 	},
@@ -79,9 +77,7 @@ Module.register("compliments", {
 			return 0;
 		}
 
-		var generate = function() {
-			return Math.floor(Math.random() * compliments.length);
-		};
+		var generate = () => Math.floor(Math.random() * compliments.length);
 
 		var complimentIndex = generate();
 
@@ -133,7 +129,7 @@ Module.register("compliments", {
 			path = isRemote ? this.config.remoteFile : this.file(this.config.remoteFile);
 		xobj.overrideMimeType("application/json");
 		xobj.open("GET", path, true);
-		xobj.onreadystatechange = function() {
+		xobj.onreadystatechange = () => {
 			if (xobj.readyState == 4 && xobj.status == "200") {
 				callback(xobj.responseText);
 			}
