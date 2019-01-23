@@ -28,20 +28,16 @@ Module.register("clock",{
 		timezone: null,
 	},
 	// Define required scripts.
-	getScripts: function() {
-		return ["moment.js", "moment-timezone.js"];
-	},
+	getScripts: () => ["moment.js", "moment-timezone.js"],
 	// Define styles.
-	getStyles: function() {
-		return ["clock_styles.css"];
-	},
+	getStyles: () => ["clock_styles.css"],
 	// Define start sequence.
 	start: function() {
 		Log.info("Starting module: " + this.name);
 
 		// Schedule update interval.
 		var self = this;
-		setInterval(function() {
+		setInterval(() => {
 			self.updateDom();
 		}, 1000);
 
@@ -213,7 +209,7 @@ Module.register("clock",{
 			digitalWrapper.appendChild(timeWrapper);
 			digitalWrapper.appendChild(weekWrapper);
 
-			var appendClocks = function(condition, pos1, pos2) {
+			var appendClocks = (condition, pos1, pos2) => {
 				var padding = [0,0,0,0];
 				padding[(placement === condition) ? pos1 : pos2] = "20px";
 				analogWrapper.style.padding = padding.join(" ");
