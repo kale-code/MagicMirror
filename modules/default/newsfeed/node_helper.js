@@ -48,11 +48,11 @@ module.exports = NodeHelper.create({
 			console.log("Create new news fetcher for url: " + url + " - Interval: " + reloadInterval);
 			fetcher = new Fetcher(url, reloadInterval, encoding, config.logFeedWarnings);
 
-			fetcher.onReceive(function(fetcher) {
+			fetcher.onReceive(fetcher => {
 				self.broadcastFeeds();
 			});
 
-			fetcher.onError(function(fetcher, error) {
+			fetcher.onError((fetcher, error) => {
 				self.sendSocketNotification("FETCH_ERROR", {
 					url: fetcher.url(),
 					error: error
