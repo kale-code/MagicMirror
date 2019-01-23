@@ -14,9 +14,7 @@ Module.register("helloworld",{
 		text: "Hello World!"
 	},
 
-	getTemplate: function () {
-		return "helloworld.njk"
-	},
+	getTemplate: () => "helloworld.njk",
 
 	getTemplateData: function () {
 		return this.config
