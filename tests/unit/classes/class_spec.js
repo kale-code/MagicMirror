@@ -3,37 +3,37 @@ const expect = chai.expect;
 const path = require("path");
 const {JSDOM} = require("jsdom");
 
-describe("File js/class", function() {
-	describe("Test function cloneObject", function() {
+describe("File js/class", () => {
+	describe("Test function cloneObject", () => {
 		let clone;
 		let dom;
 
-		before(function(done) {
+		before(done => {
 			dom = new JSDOM(`<script>var Log = {log: function() {}};</script>\
 					<script src="${path.join(__dirname, "..", "..", "..", "js", "class.js")}">`, { runScripts: "dangerously",
 				resources: "usable" });
-			dom.window.onload = function() {
+			dom.window.onload = () => {
 				const {cloneObject} = dom.window;
 				clone = cloneObject;
 				done();
 			};
 		});
 
-		it("should clone object", function() {
+		it("should clone object", () => {
 			const expected = {name: "Rodrigo", web: "https://rodrigoramirez.com", project: "MagicMirror"};
 			const obj = clone(expected);
 			expect(obj).to.deep.equal(expected);
 			expect(expected === obj).to.equal(false);
 		});
 
-		it("should clone array", function() {
+		it("should clone array", () => {
 			const expected = [1, null, undefined, "TEST"];
 			const obj = clone(expected);
 			expect(obj).to.deep.equal(expected);
 			expect(expected === obj).to.equal(false);
 		});
 
-		it("should clone number", function() {
+		it("should clone number", () => {
 			let expected = 1;
 			let obj = clone(expected);
 			expect(obj).to.equal(expected);
@@ -43,25 +43,25 @@ describe("File js/class", function() {
 			expect(obj).to.equal(expected);
 		});
 
-		it("should clone string", function() {
+		it("should clone string", () => {
 			const expected = "Perfect stranger";
 			const obj = clone(expected);
 			expect(obj).to.equal(expected);
 		});
 
-		it("should clone undefined", function() {
+		it("should clone undefined", () => {
 			const expected = undefined;
 			const obj = clone(expected);
 			expect(obj).to.equal(expected);
 		});
 
-		it("should clone null", function() {
+		it("should clone null", () => {
 			const expected = null;
 			const obj = clone(expected);
 			expect(obj).to.equal(expected);
 		});
 
-		it("should clone nested object", function() {
+		it("should clone nested object", () => {
 			const expected = {
 				name: "fewieden",
 				link: "https://github.com/fewieden",
@@ -83,21 +83,21 @@ describe("File js/class", function() {
 			expect(expected.properties.items[1] === obj.properties.items[1]).to.equal(false);
 		});
 
-		describe("Test lockstring code", function() {
+		describe("Test lockstring code", () => {
 			let log;
 
-			before(function() {
+			before(() => {
 				log = dom.window.Log.log;
 				dom.window.Log.log = function cmp(str) {
 					expect(str).to.equal("lockStrings");
 				};
 			});
 
-			after(function() {
+			after(() => {
 				dom.window.Log.log = log;
 			});
 
-			it("should clone object and log lockStrings", function() {
+			it("should clone object and log lockStrings", () => {
 				const expected = {name: "Module", lockStrings: "stringLock"};
 				const obj = clone(expected);
 				expect(obj).to.deep.equal(expected);
