@@ -6,7 +6,7 @@ Module.register("updatenotification", {
 
 	status: false,
 
-	start: function () {
+	start: () => {
 		Log.log("Start updatenotification");
 
 	},
