@@ -31,7 +31,7 @@ WeatherProvider.register("openweathermap", {
 				const currentWeather = this.generateWeatherObjectFromCurrentWeather(data);
 				this.setCurrentWeather(currentWeather);
 			})
-			.catch(function(request) {
+			.catch(request => {
 				Log.error("Could not load data ... ", request);
 			})
 	},
@@ -51,7 +51,7 @@ WeatherProvider.register("openweathermap", {
 				const forecast = this.generateWeatherObjectsFromForecast(data.list);
 				this.setWeatherForecast(forecast);
 			})
-			.catch(function(request) {
+			.catch(request => {
 				Log.error("Could not load data ... ", request);
 			})
 	},
