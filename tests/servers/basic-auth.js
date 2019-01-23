@@ -30,6 +30,6 @@ exports.listen = function() {
 	server = app.listen.apply(app, arguments);
 };
 
-exports.close = function(callback) {
+exports.close = callback => {
 	server.close(callback);
 };
