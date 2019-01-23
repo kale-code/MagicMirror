@@ -3,7 +3,7 @@
 "use strict";
 
 // Use seperate scope to prevent global scope pollution
-(function () {
+(() => {
 	var config = {};
 
 	// Helper function to get server address/hostname from either the commandline or env
@@ -31,16 +31,16 @@
 				var configData = "";
 
 				// Gather incomming data
-				response.on("data", function(chunk) {
+				response.on("data", chunk => {
 					configData += chunk;
 				});
 				// Resolve promise at the end of the HTTP/HTTPS stream
-				response.on("end", function() {
+				response.on("end", () => {
 					resolve(JSON.parse(configData));
 				});
 			});
 
-			request.on("error", function(error) {
+			request.on("error", error => {
 				reject(new Error(`Unable to read config from server (${url} (${error.message}`));
 			});
 		})
@@ -62,7 +62,7 @@
 	// Only start the client if a non-local server was provided
 	if (["localhost", "127.0.0.1", "::1", "::ffff:127.0.0.1", undefined].indexOf(config.address) === -1) {
 		getServerConfig(`http://${config.address}:${config.port}/config/`)
-			.then(function (configReturn) {
+			.then(configReturn => {
 				// Pass along the server config via an environment variable
 				var env = Object.create(process.env);
 				var options = { env: env };
@@ -75,16 +75,16 @@
 				const child = require("child_process").spawn(electron, ["js/electron.js"], options);
 
 				// Pipe all child process output to current stdout
-				child.stdout.on("data", function (buf) {
+				child.stdout.on("data", buf => {
 					process.stdout.write(`Client: ${buf}`);
 				});
 
 				// Pipe all child process errors to current stderr
-				child.stderr.on("data", function (buf) {
+				child.stderr.on("data", buf => {
 					process.stderr.write(`Client: ${buf}`);
 				});
 
-				child.on("error", function (err) {
+				child.on("error", err => {
 					process.stdout.write(`Client: ${err}`);
 				});
 
@@ -95,7 +95,7 @@
 				});
 
 			})
-			.catch(function (reason) {
+			.catch(reason => {
 				fail(`Unable to connect to server: (${reason})`);
 			});
 	} else {
