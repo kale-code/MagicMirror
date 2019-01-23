@@ -14,13 +14,13 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 	var reloadTimer = null;
 	var events = [];
 
-	var fetchFailedCallback = function() {};
-	var eventsReceivedCallback = function() {};
+	var fetchFailedCallback = () => {};
+	var eventsReceivedCallback = () => {};
 
 	/* fetchCalendar()
 	 * Initiates calendar fetch.
 	 */
-	var fetchCalendar = function() {
+	var fetchCalendar = () => {
 
 		clearTimeout(reloadTimer);
 		reloadTimer = null;
@@ -53,7 +53,7 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 			}
 		}
 
-		ical.fromURL(url, opts, function(err, data) {
+		ical.fromURL(url, opts, (err, data) => {
 			if (err) {
 				fetchFailedCallback(self, err);
 				scheduleTimer();
@@ -63,11 +63,9 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 			// console.log(data);
 			newEvents = [];
 
-			var limitFunction = function(date, i) {return i < maximumEntries;};
+			var limitFunction = (date, i) => i < maximumEntries;
 
-			var eventDate = function(event, time) {
-				return (event[time].length === 8) ? moment(event[time], "YYYYMMDD") : moment(new Date(event[time]));
-			};
+			var eventDate = (event, time) => (event[time].length === 8) ? moment(event[time], "YYYYMMDD") : moment(new Date(event[time]));
 
 			for (var e in data) {
 				var event = data[e];
@@ -246,9 +244,7 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 				}
 			}
 
-			newEvents.sort(function(a, b) {
-				return a.startDate - b.startDate;
-			});
+			newEvents.sort((a, b) => a.startDate - b.startDate);
 
 			//console.log(newEvents);
 
@@ -262,10 +258,10 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 	/* scheduleTimer()
 	 * Schedule the timer for the next update.
 	 */
-	var scheduleTimer = function() {
+	var scheduleTimer = () => {
 		//console.log('Schedule update timer.');
 		clearTimeout(reloadTimer);
-		reloadTimer = setTimeout(function() {
+		reloadTimer = setTimeout(() => {
 			fetchCalendar();
 		}, reloadInterval);
 	};
@@ -277,7 +273,7 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 	 *
 	 * return bool - The event is a fullday event.
 	 */
-	var isFullDayEvent = function(event) {
+	var isFullDayEvent = event => {
 		if (event.start.length === 8) {
 			return true;
 		}
@@ -302,7 +298,7 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 	 *
 	 * return bool - The event should be filtered out
 	 */
-	var timeFilterApplies = function(now, endDate, filter) {
+	var timeFilterApplies = (now, endDate, filter) => {
 		if (filter) {
 			var until = filter.split(" "),
 				value = parseInt(until[0]),
@@ -315,7 +311,7 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 		return false;
 	};
 
-	var testTitleByFilter = function (title, filter, useRegex, regexFlags) {
+	var testTitleByFilter = (title, filter, useRegex, regexFlags) => {
 		if (useRegex) {
 			// Assume if leading slash, there is also trailing slash
 			if (filter[0] === "/") {
@@ -336,14 +332,14 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 	/* startFetch()
 	 * Initiate fetchCalendar();
 	 */
-	this.startFetch = function() {
+	this.startFetch = () => {
 		fetchCalendar();
 	};
 
 	/* broadcastItems()
 	 * Broadcast the existing events.
 	 */
-	this.broadcastEvents = function() {
+	this.broadcastEvents = () => {
 		//console.log('Broadcasting ' + events.length + ' events.');
 		eventsReceivedCallback(self);
 	};
@@ -353,7 +349,7 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 	 *
 	 * argument callback function - The on success callback.
 	 */
-	this.onReceive = function(callback) {
+	this.onReceive = callback => {
 		eventsReceivedCallback = callback;
 	};
 
@@ -362,7 +358,7 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 	 *
 	 * argument callback function - The on error callback.
 	 */
-	this.onError = function(callback) {
+	this.onError = callback => {
 		fetchFailedCallback = callback;
 	};
 
@@ -371,18 +367,14 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 	 *
 	 * return string - The url of this fetcher.
 	 */
-	this.url = function() {
-		return url;
-	};
+	this.url = () => url;
 
 	/* events()
 	 * Returns current available events for this fetcher.
 	 *
 	 * return array - The current available events for this fetcher.
 	 */
-	this.events = function() {
-		return events;
-	};
+	this.events = () => events;
 
 };
 
