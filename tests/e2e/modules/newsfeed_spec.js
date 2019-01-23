@@ -14,27 +14,21 @@ describe("Newsfeed module", function() {
 
 	var app = null;
 
-	beforeEach(function() {
-		return helpers
+	beforeEach(() => helpers
 			.startApplication({
 				args: ["js/electron.js"]
 			})
-			.then(function(startedApp) {
+			.then(startedApp => {
 				app = startedApp;
-			});
-	});
+			}));
 
-	afterEach(function() {
-		return helpers.stopApplication(app);
-	});
+	afterEach(() => helpers.stopApplication(app));
 
-	describe("Default configuration", function() {
-		before(function() {
+	describe("Default configuration", () => {
+		before(() => {
 			process.env.MM_CONFIG_FILE = "tests/configs/modules/newsfeed/default.js";
 		});
 
-		it("show title newsfeed", function() {
-			return app.client.waitUntilTextExists(".newsfeed .small", "Rodrigo Ramirez Blog", 10000).should.be.fulfilled;
-		});
+		it("show title newsfeed", () => app.client.waitUntilTextExists(".newsfeed .small", "Rodrigo Ramirez Blog", 10000).should.be.fulfilled);
 	});
 });
