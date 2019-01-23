@@ -26,8 +26,8 @@ var Fetcher = function(url, reloadInterval, encoding, logFeedWarnings) {
 	var reloadTimer = null;
 	var items = [];
 
-	var fetchFailedCallback = function() {};
-	var itemsReceivedCallback = function() {};
+	var fetchFailedCallback = () => {};
+	var itemsReceivedCallback = () => {};
 
 	/* private methods */
 
@@ -35,14 +35,14 @@ var Fetcher = function(url, reloadInterval, encoding, logFeedWarnings) {
 	 * Request the new items.
 	 */
 
-	var fetchNews = function() {
+	var fetchNews = () => {
 		clearTimeout(reloadTimer);
 		reloadTimer = null;
 		items = [];
 
 		var parser = new FeedMe();
 
-		parser.on("item", function(item) {
+		parser.on("item", item => {
 
 			var title = item.title;
 			var description = item.description || item.summary || item.content || "";
@@ -70,13 +70,13 @@ var Fetcher = function(url, reloadInterval, encoding, logFeedWarnings) {
 			}
 		});
 
-		parser.on("end",	function() {
+		parser.on("end",	() => {
 			//console.log("end parsing - " + url);
 			self.broadcastItems();
 			scheduleTimer();
 		});
 
-		parser.on("error", function(error) {
+		parser.on("error", error => {
 			fetchFailedCallback(self, error);
 			scheduleTimer();
 		});
@@ -88,7 +88,7 @@ var Fetcher = function(url, reloadInterval, encoding, logFeedWarnings) {
 			"Pragma": "no-cache"}
 
 		request({uri: url, encoding: null, headers: headers})
-			.on("error", function(error) {
+			.on("error", error => {
 				fetchFailedCallback(self, error);
 				scheduleTimer();
 			})
@@ -100,10 +100,10 @@ var Fetcher = function(url, reloadInterval, encoding, logFeedWarnings) {
 	 * Schedule the timer for the next update.
 	 */
 
-	var scheduleTimer = function() {
+	var scheduleTimer = () => {
 		//console.log('Schedule update timer.');
 		clearTimeout(reloadTimer);
-		reloadTimer = setTimeout(function() {
+		reloadTimer = setTimeout(() => {
 			fetchNews();
 		}, reloadInterval);
 	};
@@ -115,7 +115,7 @@ var Fetcher = function(url, reloadInterval, encoding, logFeedWarnings) {
 	 *
 	 * attribute interval number - Interval for the update in milliseconds.
 	 */
-	this.setReloadInterval = function(interval) {
+	this.setReloadInterval = interval => {
 		if (interval > 1000 && interval < reloadInterval) {
 			reloadInterval = interval;
 		}
@@ -124,14 +124,14 @@ var Fetcher = function(url, reloadInterval, encoding, logFeedWarnings) {
 	/* startFetch()
 	 * Initiate fetchNews();
 	 */
-	this.startFetch = function() {
+	this.startFetch = () => {
 		fetchNews();
 	};
 
 	/* broadcastItems()
 	 * Broadcast the existing items.
 	 */
-	this.broadcastItems = function() {
+	this.broadcastItems = () => {
 		if (items.length <= 0) {
 			//console.log('No items to broadcast yet.');
 			return;
@@ -140,21 +140,17 @@ var Fetcher = function(url, reloadInterval, encoding, logFeedWarnings) {
 		itemsReceivedCallback(self);
 	};
 
-	this.onReceive = function(callback) {
+	this.onReceive = callback => {
 		itemsReceivedCallback = callback;
 	};
 
-	this.onError = function(callback) {
+	this.onError = callback => {
 		fetchFailedCallback = callback;
 	};
 
-	this.url = function() {
-		return url;
-	};
+	this.url = () => url;
 
-	this.items = function() {
-		return items;
-	};
+	this.items = () => items;
 };
 
 module.exports = Fetcher;
