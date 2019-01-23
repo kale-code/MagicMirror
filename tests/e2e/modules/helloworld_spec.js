@@ -14,43 +14,35 @@ describe("Test helloworld module", function() {
 
 	var app = null;
 
-	beforeEach(function() {
-		return helpers
+	beforeEach(() => helpers
 			.startApplication({
 				args: ["js/electron.js"]
 			})
-			.then(function(startedApp) {
+			.then(startedApp => {
 				app = startedApp;
-			});
-	});
+			}));
 
 
-	afterEach(function() {
-		return helpers.stopApplication(app);
-	});
+	afterEach(() => helpers.stopApplication(app));
 
-	describe("helloworld set config text", function () {
-		before(function() {
+	describe("helloworld set config text", () => {
+		before(() => {
 			// Set config sample for use in test
 			process.env.MM_CONFIG_FILE = "tests/configs/modules/helloworld/helloworld.js";
 		});
 
-		it("Test message helloworld module", function () {
-			return app.client.waitUntilWindowLoaded()
-				.getText(".helloworld").should.eventually.equal("Test HelloWorld Module");
-		});
+		it("Test message helloworld module", () => app.client.waitUntilWindowLoaded()
+				.getText(".helloworld").should.eventually.equal("Test HelloWorld Module"));
 	});
 
-	describe("helloworld default config text", function () {
-		before(function() {
+	describe("helloworld default config text", () => {
+		before(() => {
 			// Set config sample for use in test
 			process.env.MM_CONFIG_FILE = "tests/configs/modules/helloworld/helloworld_default.js";
 		});
 
-		it("Test message helloworld module", function () {
-			return app.client.waitUntilWindowLoaded()
-				.getText(".helloworld").should.eventually.equal("Hello World!");
-		});
+		it("Test message helloworld module", () => app.client.waitUntilWindowLoaded()
+				.getText(".helloworld").should.eventually.equal("Hello World!"));
 	});
 
 });
