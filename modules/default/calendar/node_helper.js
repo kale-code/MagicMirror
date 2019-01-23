@@ -49,7 +49,7 @@ module.exports = NodeHelper.create({
 			console.log("Create new calendar fetcher for url: " + url + " - Interval: " + fetchInterval);
 			fetcher = new CalendarFetcher(url, fetchInterval, excludedEvents, maximumEntries, maximumNumberOfDays, auth);
 
-			fetcher.onReceive(function(fetcher) {
+			fetcher.onReceive(fetcher => {
 				//console.log('Broadcast events.');
 				//console.log(fetcher.events());
 
@@ -59,7 +59,7 @@ module.exports = NodeHelper.create({
 				});
 			});
 
-			fetcher.onError(function(fetcher, error) {
+			fetcher.onError((fetcher, error) => {
 				self.sendSocketNotification("FETCH_ERROR", {
 					url: fetcher.url(),
 					error: error
