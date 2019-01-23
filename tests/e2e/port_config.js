@@ -14,43 +14,39 @@ describe("port directive configuration", function () {
 
 	var app = null;
 
-	beforeEach(function () {
-		return helpers.startApplication({
+	beforeEach(() => helpers.startApplication({
 			args: ["js/electron.js"]
-		}).then(function (startedApp) { app = startedApp; })
-	});
+		}).then(startedApp => { app = startedApp; }));
 
-	afterEach(function () {
-		return helpers.stopApplication(app);
-	});
+	afterEach(() => helpers.stopApplication(app));
 
-	describe("Set port 8090", function () {
-		before(function () {
+	describe("Set port 8090", () => {
+		before(() => {
 			// Set config sample for use in this test
 			process.env.MM_CONFIG_FILE = "tests/configs/port_8090.js";
 		});
 
-		it("should return 200", function (done) {
-			request.get("http://localhost:8090", function (err, res, body) {
+		it("should return 200", done => {
+			request.get("http://localhost:8090", (err, res, body) => {
 				expect(res.statusCode).to.equal(200);
 				done();
 			});
 		});
 	});
 
-	describe("Set port 8100 on enviroment variable MM_PORT", function () {
-		before(function () {
+	describe("Set port 8100 on enviroment variable MM_PORT", () => {
+		before(() => {
 			process.env.MM_PORT = 8100;
 			// Set config sample for use in this test
 			process.env.MM_CONFIG_FILE = "tests/configs/port_8090.js";
 		});
 
-		after(function () {
+		after(() => {
 			delete process.env.MM_PORT;
 		});
 
-		it("should return 200", function (done) {
-			request.get("http://localhost:8100", function (err, res, body) {
+		it("should return 200", done => {
+			request.get("http://localhost:8100", (err, res, body) => {
 				expect(res.statusCode).to.equal(200);
 				done();
 			});
