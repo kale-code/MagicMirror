@@ -19,48 +19,36 @@ describe("Development console tests", function() {
 
 	var app = null;
 
-	before(function() {
+	before(() => {
 		// Set config sample for use in test
 		process.env.MM_CONFIG_FILE = "tests/configs/env.js";
 	});
 
-	describe("Without 'dev' commandline argument", function() {
-		before(function() {
-			return helpers
+	describe("Without 'dev' commandline argument", () => {
+		before(() => helpers
 				.startApplication({
 					args: ["js/electron.js"]
 				})
-				.then(function(startedApp) {
+				.then(startedApp => {
 					app = startedApp;
-				});
-		});
+				}));
 
-		after(function() {
-			return helpers.stopApplication(app);
-		});
+		after(() => helpers.stopApplication(app));
 
-		it("should not open dev console when absent", function() {
-			return expect(app.browserWindow.isDevToolsOpened()).to.eventually.equal(false);
-		});
+		it("should not open dev console when absent", () => expect(app.browserWindow.isDevToolsOpened()).to.eventually.equal(false));
 	});
 
-	describe("With 'dev' commandline argument", function() {
-		before(function() {
-			return helpers
+	describe("With 'dev' commandline argument", () => {
+		before(() => helpers
 				.startApplication({
 					args: ["js/electron.js", "dev"]
 				})
-				.then(function(startedApp) {
+				.then(startedApp => {
 					app = startedApp;
-				});
-		});
+				}));
 
-		after(function() {
-			return helpers.stopApplication(app);
-		});
+		after(() => helpers.stopApplication(app));
 
-		it("should open dev console when provided", function() {
-			return expect(app.browserWindow.isDevToolsOpened()).to.eventually.equal(true);
-		});
+		it("should open dev console when provided", () => expect(app.browserWindow.isDevToolsOpened()).to.eventually.equal(true));
 	});
 });
