@@ -74,17 +74,13 @@ Module.register("currentweather",{
 	fetchedLocatioName: "",
 
 	// Define required scripts.
-	getScripts: function() {
-		return ["moment.js"];
-	},
+	getScripts: () => ["moment.js"],
 
 	// Define required scripts.
-	getStyles: function() {
-		return ["weather-icons.css", "currentweather.css"];
-	},
+	getStyles: () => ["weather-icons.css", "currentweather.css"],
 
 	// Define required translations.
-	getTranslations: function() {
+	getTranslations: () => {
 		// The translations for the default modules are defined in the core translation files.
 		// Therefor we can just return false. Otherwise we should have returned a dictionary.
 		// If you're trying to build your own module including translations, check out the documentation.
@@ -495,7 +491,7 @@ Module.register("currentweather",{
 		}
 
 		var self = this;
-		setTimeout(function() {
+		setTimeout(() => {
 			self.updateWeather();
 		}, nextLoad);
 	},
@@ -511,7 +507,7 @@ Module.register("currentweather",{
 	 *
 	 * return number - Windspeed in beaufort.
 	 */
-	ms2Beaufort: function(ms) {
+	ms2Beaufort: ms => {
 		var kmh = ms * 60 * 60 / 1000;
 		var speeds = [1, 5, 11, 19, 28, 38, 49, 61, 74, 88, 102, 117, 1000];
 		for (var beaufort in speeds) {
@@ -523,7 +519,7 @@ Module.register("currentweather",{
 		return 12;
 	},
 
-	deg2Cardinal: function(deg) {
+	deg2Cardinal: deg => {
 		if (deg>11.25 && deg<=33.75){
 			return "NNE";
 		} else if (deg > 33.75 && deg <= 56.25) {
