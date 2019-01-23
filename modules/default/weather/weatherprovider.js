@@ -46,19 +46,19 @@ var WeatherProvider = Class.extend({
 	},
 
 	// Called when the weather provider is about to start.
-	start: function() {
+	start: () => {
 		Log.info(`Weather provider: ${this.providerName} started.`);
 	},
 
 	// This method should start the API request to fetch the current weather.
 	// This method should definetly be overwritten in the provider.
-	fetchCurrentWeather: function() {
+	fetchCurrentWeather: () => {
 		Log.warn(`Weather provider: ${this.providerName} does not subclass the fetchCurrentWeather method.`);
 	},
 
 	// This method should start the API request to fetch the weather forecast.
 	// This method should definetly be overwritten in the provider.
-	fetchWeatherForecast: function() {
+	fetchWeatherForecast: () => {
 		Log.warn(`Weather provider: ${this.providerName} does not subclass the fetchWeatherForecast method.`);
 	},
 
@@ -104,22 +104,20 @@ var WeatherProvider = Class.extend({
 	},
 
 	// A convinience function to make requests. It returns a promise.
-	fetchData: function(url, method = "GET", data = null) {
-		return new Promise(function(resolve, reject) {
-			var request = new XMLHttpRequest();
-			request.open(method, url, true);
-			request.onreadystatechange = function() {
-				if (this.readyState === 4) {
-					if (this.status === 200) {
-						resolve(JSON.parse(this.response));
-					} else {
-						reject(request)
-					}
+	fetchData: (url, method = "GET", data = null) => new Promise((resolve, reject) => {
+		var request = new XMLHttpRequest();
+		request.open(method, url, true);
+		request.onreadystatechange = function() {
+			if (this.readyState === 4) {
+				if (this.status === 200) {
+					resolve(JSON.parse(this.response));
+				} else {
+					reject(request)
 				}
-			};
-			request.send();
-		})
-	}
+			}
+		};
+		request.send();
+	})
 });
 
 /**
@@ -130,14 +128,14 @@ WeatherProvider.providers = [];
 /**
  * Static method to register a new weather provider.
  */
-WeatherProvider.register = function(providerIdentifier, providerDetails) {
+WeatherProvider.register = (providerIdentifier, providerDetails) => {
 	WeatherProvider.providers[providerIdentifier.toLowerCase()] = WeatherProvider.extend(providerDetails);
 };
 
 /**
  * Static method to initialize a new weather provider.
  */
-WeatherProvider.initialize = function(providerIdentifier, delegate) {
+WeatherProvider.initialize = (providerIdentifier, delegate) => {
 	providerIdentifier = providerIdentifier.toLowerCase();
 
 	var provider = new WeatherProvider.providers[providerIdentifier]();
