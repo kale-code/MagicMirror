@@ -8,13 +8,13 @@ const helmet = require("helmet");
 const {JSDOM} = require("jsdom");
 const express = require("express");
 
-describe("Translations", function() {
+describe("Translations", () => {
 	let server;
 
-	before(function() {
+	before(() => {
 		const app = express();
 		app.use(helmet());
-		app.use(function (req, res, next) {
+		app.use((req, res, next) => {
 			res.header("Access-Control-Allow-Origin", "*");
 			next();
 		});
@@ -23,11 +23,11 @@ describe("Translations", function() {
 		server = app.listen(3000);
 	});
 
-	after(function() {
+	after(() => {
 		server.close();
 	});
 
-	it("should have a translation file in the specified path", function() {
+	it("should have a translation file in the specified path", () => {
 		for(let language in translations) {
 			const file = fs.statSync(translations[language]);
 			expect(file.isFile()).to.be.equal(true);
@@ -36,21 +36,21 @@ describe("Translations", function() {
 
 	const mmm = {
 		name: "TranslationTest",
-		file(file) {
+		file:(file) {
 			return `http://localhost:3000/${file}`;
 		}
 	};
 
-	describe("Parsing language files through the Translator class", function() {
+	describe("Parsing language files through the Translator class", () => {
 		for(let language in translations) {
-			it(`should parse ${language}`, function(done) {
+			it(`should parse ${language}`, done => {
 				const dom = new JSDOM(`<script>var translations = ${JSON.stringify(translations)}; var Log = {log: function(){}};</script>\
 					<script src="${path.join(__dirname, "..", "..", "js", "translator.js")}">`, { runScripts: "dangerously",
 					resources: "usable" });
-				dom.window.onload = function() {
+				dom.window.onload = () => {
 					const {Translator} = dom.window;
 
-					Translator.load(mmm, translations[language], false, function() {
+					Translator.load(mmm, translations[language], false, () => {
 						expect(Translator.translations[mmm.name]).to.be.an("object");
 						expect(Object.keys(Translator.translations[mmm.name]).length).to.be.at.least(1);
 						done();
@@ -60,17 +60,17 @@ describe("Translations", function() {
 		}
 	});
 
-	describe("Same keys", function() {
+	describe("Same keys", () => {
 		let base;
 
-		before(function(done) {
+		before(done => {
 			const dom = new JSDOM(`<script>var translations = ${JSON.stringify(translations)}; var Log = {log: function(){}};</script>\
 					<script src="${path.join(__dirname, "..", "..", "js", "translator.js")}">`, { runScripts: "dangerously",
 				resources: "usable" });
-			dom.window.onload = function() {
+			dom.window.onload = () => {
 				const {Translator} = dom.window;
 
-				Translator.load(mmm, translations.en, false, function() {
+				Translator.load(mmm, translations.en, false, () => {
 					base = Object.keys(Translator.translations[mmm.name]).sort();
 					done();
 				});
@@ -82,25 +82,25 @@ describe("Translations", function() {
 				continue;
 			}
 
-			describe(`Translation keys of ${language}`, function() {
+			describe(`Translation keys of ${language}`, () => {
 				let keys;
 
-				before(function(done){
+				before(done => {
 					const dom = new JSDOM(`<script>var translations = ${JSON.stringify(translations)}; var Log = {log: function(){}};</script>\
 					<script src="${path.join(__dirname, "..", "..", "js", "translator.js")}">`, { runScripts: "dangerously",
 						resources: "usable" });
-					dom.window.onload = function() {
+					dom.window.onload = () => {
 						const {Translator} = dom.window;
 
-						Translator.load(mmm, translations[language], false, function() {
+						Translator.load(mmm, translations[language], false, () => {
 							keys = Object.keys(Translator.translations[mmm.name]).sort();
 							done();
 						});
 					};
 				});
 
-				it(`${language} keys should be in base`, function() {
-					keys.forEach(function(key) {
+				it(`${language} keys should be in base`, () => {
+					keys.forEach(key => {
 						expect(base.indexOf(key)).to.be.at.least(0);
 					});
 				});
@@ -112,7 +112,7 @@ describe("Translations", function() {
 
 					try {
 						expect(keys).to.deep.equal(base);
-					} catch(e) {
+					} catch (e) {
 						if (e instanceof chai.AssertionError) {
 							const diff = base.filter(key => !keys.includes(key));
 							mlog.pending(`Missing Translations for language ${language}: ${diff}`);
