@@ -42,12 +42,10 @@ Module.register("newsfeed",{
 	},
 
 	// Define required scripts.
-	getScripts: function() {
-		return ["moment.js"];
-	},
+	getScripts: () => ["moment.js"],
 
 	// Define required translations.
-	getTranslations: function() {
+	getTranslations: () => {
 		// The translations for the default modules are defined in the core translation files.
 		// Therefor we can just return false. Otherwise we should have returned a dictionary.
 		// If you're trying to build your own module including translations, check out the documentation.
@@ -242,7 +240,7 @@ Module.register("newsfeed",{
 				}
 			}
 		}
-		newsItems.sort(function(a,b) {
+		newsItems.sort((a,b) => {
 			var dateA = new Date(a.pubdate);
 			var dateB = new Date(b.pubdate);
 			return dateB - dateA;
@@ -307,7 +305,7 @@ Module.register("newsfeed",{
 
 		self.updateDom(self.config.animationSpeed);
 
-		timer = setInterval(function() {
+		timer = setInterval(() => {
 			self.activeItem++;
 			self.updateDom(self.config.animationSpeed);
 		}, this.config.updateInterval);
@@ -320,9 +318,7 @@ Module.register("newsfeed",{
 	 *
 	 * return string - Capitalized output string.
 	 */
-	capitalizeFirstLetter: function(string) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
-	},
+	capitalizeFirstLetter: string => string.charAt(0).toUpperCase() + string.slice(1),
 
 	resetDescrOrFullArticleAndTimer: function() {
 		this.isShowingDescription = this.config.showDescription;
