@@ -11,10 +11,10 @@ module.exports = NodeHelper.create({
 
 	updateTimer: null,
 
-	start: function () {
+	start: () => {
 	},
 
-	configureModules: function(modules) {
+	configureModules: modules => {
 		for (moduleName in modules) {
 			if (defaultModules.indexOf(moduleName) < 0) {
 				// Default modules are included in the main MagicMirror repo
@@ -29,9 +29,9 @@ module.exports = NodeHelper.create({
 					continue;
 				}
 
-				var res = function(mn, mf) {
+				var res = (mn, mf) => {
 					var git = SimpleGit(mf);
-					git.getRemotes(true, function(err, remotes) {
+					git.getRemotes(true, (err, remotes) => {
 						if (remotes.length < 1 || remotes[0].name.length < 1) {
 							// No valid remote for folder, skip
 							return;
@@ -60,11 +60,11 @@ module.exports = NodeHelper.create({
 	preformFetch() {
 		var self = this;
 
-		simpleGits.forEach(function(sg) {
-			sg.git.fetch().status(function(err, data) {
+		simpleGits.forEach(sg => {
+			sg.git.fetch().status((err, data) => {
 				data.module = sg.module;
 				if (!err) {
-					sg.git.log({"-1": null}, function(err, data2) {
+					sg.git.log({"-1": null}, (err, data2) => {
 						data.hash = data2.latest.hash;
 						self.sendSocketNotification("STATUS", data);
 					});
@@ -82,7 +82,7 @@ module.exports = NodeHelper.create({
 
 		var self = this;
 		clearTimeout(this.updateTimer);
-		this.updateTimer = setTimeout(function() {
+		this.updateTimer = setTimeout(() => {
 			self.preformFetch();
 		}, delay);
 	}
