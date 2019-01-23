@@ -16,15 +16,15 @@ before(function() {
 		__dirname: path.dirname(filePath),
 		global: {},
 		console: {
-			log: function() { /*console.log("console.log(", arguments, ")");*/ }
+			log: () => { /*console.log("console.log(", arguments, ")");*/ }
 		},
 		process: {
-			on: function() { /*console.log("process.on called with: ", arguments);*/ },
+			on: () => { /*console.log("process.on called with: ", arguments);*/ },
 			env: {}
 		}
 	};
 
-	this.sandbox.require = function(filename) {
+	this.sandbox.require = filename => {
 		// This modifies the global slightly,
 		// but supplies vm with essential code
 		return require(filename);
@@ -33,11 +33,12 @@ before(function() {
 	vm.runInNewContext(code, this.sandbox, fileName);
 });
 
-after(function() {
+after(() => {
 	//console.log(global);
+
 });
 
-describe("'global.root_path' set in js/app.js", function() {
+describe("'global.root_path' set in js/app.js", () => {
 	var expectedSubPaths = [
 		"modules",
 		"serveronly",
@@ -54,11 +55,11 @@ describe("'global.root_path' set in js/app.js", function() {
 		});
 	});
 
-	it("should not modify global.root_path for testing", function() {
+	it("should not modify global.root_path for testing", () => {
 		expect(global.root_path).to.equal(undefined);
 	});
 
-	it("should not modify global.version for testing", function() {
+	it("should not modify global.version for testing", () => {
 		expect(global.version).to.equal(undefined);
 	});
 
