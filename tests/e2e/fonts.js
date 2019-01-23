@@ -25,7 +25,7 @@ describe("All font files from roboto.css should be downloadable", function() {
 		match = regex.exec(fileContent);
 	}
 
-	before(function() {
+	before(() => {
 		// Set config sample for use in test
 		process.env.MM_CONFIG_FILE = "tests/configs/without_modules.js";
 
@@ -33,18 +33,16 @@ describe("All font files from roboto.css should be downloadable", function() {
 			.startApplication({
 				args: ["js/electron.js"]
 			})
-			.then(function(startedApp) {
+			.then(startedApp => {
 				app = startedApp;
 			});
 	});
 
-	after(function() {
-		return helpers.stopApplication(app);
-	});
+	after(() => helpers.stopApplication(app));
 
 	forEach(fontFiles).it("should return 200 HTTP code for file '%s'", (fontFile, done) => {
 		var fontUrl = "http://localhost:8080/fonts/" + fontFile;
-		request.get(fontUrl, function(err, res, body) {
+		request.get(fontUrl, (err, res, body) => {
 			expect(res.statusCode).to.equal(200);
 			done();
 		});
