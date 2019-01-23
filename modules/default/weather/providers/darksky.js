@@ -29,7 +29,7 @@ WeatherProvider.register("darksky", {
 
 				const currentWeather = this.generateWeatherDayFromCurrentWeather(data);
 				this.setCurrentWeather(currentWeather);
-			}).catch(function(request) {
+			}).catch(request => {
 				Log.error("Could not load data ... ", request);
 			});
 	},
@@ -44,7 +44,7 @@ WeatherProvider.register("darksky", {
 
 				const forecast = this.generateWeatherObjectsFromForecast(data.daily.data);
 				this.setWeatherForecast(forecast);
-			}).catch(function(request) {
+			}).catch(request => {
 				Log.error("Could not load data ... ", request);
 			});
 	},
