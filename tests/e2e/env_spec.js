@@ -14,27 +14,22 @@ describe("Electron app environment", function() {
 
 	var app = null;
 
-	before(function() {
+	before(() => {
 		// Set config sample for use in test
 		process.env.MM_CONFIG_FILE = "tests/configs/env.js";
 	});
 
-	beforeEach(function() {
-		return helpers
+	beforeEach(() => helpers
 			.startApplication({
 				args: ["js/electron.js"]
 			})
-			.then(function(startedApp) {
+			.then(startedApp => {
 				app = startedApp;
-			});
-	});
+			}));
 
-	afterEach(function() {
-		return helpers.stopApplication(app);
-	});
+	afterEach(() => helpers.stopApplication(app));
 
-	it("should open a browserwindow", function() {
-		return app.client
+	it("should open a browserwindow", () => app.client
 			.waitUntilWindowLoaded()
 			.browserWindow.focus()
 			.getWindowCount()
@@ -50,18 +45,17 @@ describe("Electron app environment", function() {
 			.should.eventually.have.property("height")
 			.and.be.above(0)
 			.browserWindow.getTitle()
-			.should.eventually.equal("MagicMirror²");
-	});
+			.should.eventually.equal("MagicMirror²"));
 
-	it("get request from http://localhost:8080 should return 200", function(done) {
-		request.get("http://localhost:8080", function(err, res, body) {
+	it("get request from http://localhost:8080 should return 200", done => {
+		request.get("http://localhost:8080", (err, res, body) => {
 			expect(res.statusCode).to.equal(200);
 			done();
 		});
 	});
 
-	it("get request from http://localhost:8080/nothing should return 404", function(done) {
-		request.get("http://localhost:8080/nothing", function(err, res, body) {
+	it("get request from http://localhost:8080/nothing should return 404", done => {
+		request.get("http://localhost:8080/nothing", (err, res, body) => {
 			expect(res.statusCode).to.equal(404);
 			done();
 		});
