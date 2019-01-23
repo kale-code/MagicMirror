@@ -15,92 +15,78 @@ describe("Calendar module", function() {
 
 	var app = null;
 
-	beforeEach(function() {
-		return helpers
+	beforeEach(() => helpers
 			.startApplication({
 				args: ["js/electron.js"]
 			})
-			.then(function(startedApp) {
+			.then(startedApp => {
 				app = startedApp;
-			});
-	});
+			}));
 
-	afterEach(function() {
-		return helpers.stopApplication(app);
-	});
+	afterEach(() => helpers.stopApplication(app));
 
-	describe("Default configuration", function() {
-		before(function() {
+	describe("Default configuration", () => {
+		before(() => {
 			// Set config sample for use in test
 			process.env.MM_CONFIG_FILE = "tests/configs/modules/calendar/default.js";
 		});
 
-		it("Should return TestEvents", function() {
-			return app.client.waitUntilTextExists(".calendar", "TestEvent", 10000);
-		});
+		it("Should return TestEvents", () => app.client.waitUntilTextExists(".calendar", "TestEvent", 10000));
 	});
 
-	describe("Basic auth", function() {
-		before(function() {
+	describe("Basic auth", () => {
+		before(() => {
 			serverBasicAuth.listen(8010);
 			// Set config sample for use in test
 			process.env.MM_CONFIG_FILE = "tests/configs/modules/calendar/basic-auth.js";
 		});
 
-		after(function(done) {
+		after(done => {
 			serverBasicAuth.close(done());
 		});
 
-		it("Should return TestEvents", function() {
-			return app.client.waitUntilTextExists(".calendar", "TestEvent", 10000);
-		});
+		it("Should return TestEvents", () => app.client.waitUntilTextExists(".calendar", "TestEvent", 10000));
 	});
 
-	describe("Basic auth by default", function() {
-		before(function() {
+	describe("Basic auth by default", () => {
+		before(() => {
 			serverBasicAuth.listen(8011);
 			// Set config sample for use in test
 			process.env.MM_CONFIG_FILE = "tests/configs/modules/calendar/auth-default.js";
 		});
 
-		after(function(done) {
+		after(done => {
 			serverBasicAuth.close(done());
 		});
 
-		it("Should return TestEvents", function() {
-			return app.client.waitUntilTextExists(".calendar", "TestEvent", 10000);
-		});
+		it("Should return TestEvents", () => app.client.waitUntilTextExists(".calendar", "TestEvent", 10000));
 	});
 
-	describe("Basic auth backward compatibilty configuration: DEPRECATED", function() {
-		before(function() {
+	describe("Basic auth backward compatibilty configuration: DEPRECATED", () => {
+		before(() => {
 			serverBasicAuth.listen(8012);
 			// Set config sample for use in test
 			process.env.MM_CONFIG_FILE = "tests/configs/modules/calendar/old-basic-auth.js";
 		});
 
-		after(function(done) {
+		after(done => {
 			serverBasicAuth.close(done());
 		});
 
-		it("Should return TestEvents", function() {
-			return app.client.waitUntilTextExists(".calendar", "TestEvent", 10000);
-		});
+		it("Should return TestEvents", () => app.client.waitUntilTextExists(".calendar", "TestEvent", 10000));
 	});
 
-	describe("Fail Basic auth", function() {
-		before(function() {
+	describe("Fail Basic auth", () => {
+		before(() => {
 			serverBasicAuth.listen(8020);
 			// Set config sample for use in test
 			process.env.MM_CONFIG_FILE = "tests/configs/modules/calendar/fail-basic-auth.js";
 		});
 
-		after(function(done) {
+		after(done => {
 			serverBasicAuth.close(done());
 		});
 
-		it("Should return No upcoming events", function() {
-			return app.client.waitUntilTextExists(".calendar", "No upcoming events.", 10000);
-		});
+		it("Should return No upcoming events", () => app.client.waitUntilTextExists(".calendar", "No upcoming events.", 10000));
 	});
 });
