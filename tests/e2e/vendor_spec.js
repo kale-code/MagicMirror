@@ -17,27 +17,23 @@ describe("Vendors", function () {
 
 	var app = null;
 
-	before(function () {
-		return helpers.startApplication({
+	before(() => helpers.startApplication({
 			args: ["js/electron.js"]
-		}).then(function (startedApp) { app = startedApp; })
-	});
+		}).then(startedApp => { app = startedApp; }));
 
-	after(function () {
-		return helpers.stopApplication(app);
-	});
+	after(() => helpers.stopApplication(app));
 
-	describe("Get list vendors", function () {
+	describe("Get list vendors", () => {
 
-		before(function () {
+		before(() => {
 			process.env.MM_CONFIG_FILE = "tests/configs/env.js";
 		});
 
 		var vendors = require(__dirname + "/../../vendor/vendor.js");
 		Object.keys(vendors).forEach(vendor => {
-			it(`should return 200 HTTP code for vendor "${vendor}"`, function () {
+			it(`should return 200 HTTP code for vendor "${vendor}"`, () => {
 				urlVendor = "http://localhost:8080/vendor/" + vendors[vendor];
-				request.get(urlVendor, function (err, res, body) {
+				request.get(urlVendor, (err, res, body) => {
 					expect(res.statusCode).to.equal(200);
 				});
 			});
