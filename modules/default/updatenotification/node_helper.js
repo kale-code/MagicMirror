@@ -29,7 +29,7 @@ module.exports = NodeHelper.create({
 					continue;
 				}
 
-				var res = (mn, mf) => {
+				var res = function(mn, mf) {
 					var git = SimpleGit(mf);
 					git.getRemotes(true, (err, remotes) => {
 						if (remotes.length < 1 || remotes[0].name.length < 1) {

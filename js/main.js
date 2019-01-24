@@ -70,7 +70,7 @@ var MM = (() => {
 	 * argument position string - The name of the position.
 	 */
 	var selectWrapper = position => {
-		var classes = position.replace("_"," ");
+		var classes = position.replace("_", " ");
 		var parentWrapper = document.getElementsByClassName(classes);
 		if (parentWrapper.length > 0) {
 			var wrapper = parentWrapper[0].getElementsByClassName("container");
@@ -106,20 +106,20 @@ var MM = (() => {
 	 * return Promise - Resolved when the dom is fully updated.
 	 */
 	var updateDom = (module, speed) => new Promise(resolve => {
-			var newContentPromise = module.getDom();
-			var newHeader = module.getHeader();
+		var newContentPromise = module.getDom();
+		var newHeader = module.getHeader();
 
-			if (!(newContentPromise instanceof Promise)) {
-				// convert to a promise if not already one to avoid if/else's everywhere
-				newContentPromise = Promise.resolve(newContentPromise);
-			}
+		if (!(newContentPromise instanceof Promise)) {
+			// convert to a promise if not already one to avoid if/else's everywhere
+			newContentPromise = Promise.resolve(newContentPromise);
+		}
 
-			newContentPromise.then(newContent => {
-				var updatePromise = updateDomWithContent(module, speed, newHeader, newContent);
+		newContentPromise.then(newContent => {
+			var updatePromise = updateDomWithContent(module, speed, newHeader, newContent);
 
-				updatePromise.then(resolve).catch(Log.error);
-			}).catch(Log.error);
-		});
+			updatePromise.then(resolve).catch(Log.error);
+		}).catch(Log.error);
+	});
 
 	/* updateDomWithContent(module, speed, newHeader, newContent)
 	 * Update the dom with the specified content
@@ -132,31 +132,31 @@ var MM = (() => {
 	 * return Promise - Resolved when the module dom has been updated.
 	 */
 	var updateDomWithContent = (module, speed, newHeader, newContent) => new Promise(resolve => {
-			if (module.hidden || !speed) {
-				updateModuleContent(module, newHeader, newContent);
-				resolve();
-				return;
-			}
+		if (module.hidden || !speed) {
+			updateModuleContent(module, newHeader, newContent);
+			resolve();
+			return;
+		}
 
-			if (!moduleNeedsUpdate(module, newHeader, newContent)) {
-				resolve();
-				return;
-			}
+		if (!moduleNeedsUpdate(module, newHeader, newContent)) {
+			resolve();
+			return;
+		}
 
-			if (!speed) {
-				updateModuleContent(module, newHeader, newContent);
-				resolve();
-				return;
-			}
+		if (!speed) {
+			updateModuleContent(module, newHeader, newContent);
+			resolve();
+			return;
+		}
 
-			hideModule(module, speed / 2, () => {
-				updateModuleContent(module, newHeader, newContent);
-				if (!module.hidden) {
-					showModule(module, speed / 2);
-				}
-				resolve();
-			});
+		hideModule(module, speed / 2, () => {
+			updateModuleContent(module, newHeader, newContent);
+			if (!module.hidden) {
+				showModule(module, speed / 2);
+			}
+			resolve();
 		});
+	});
 
 	/* moduleNeedsUpdate(module, newContent)
 	 * Check if the content has changed.
@@ -201,7 +201,7 @@ var MM = (() => {
 		contentWrapper[0].innerHTML = "";
 		contentWrapper[0].appendChild(newContent);
 
-		if( headerWrapper.length > 0 && newHeader) {
+		if (headerWrapper.length > 0 && newHeader) {
 			headerWrapper[0].innerHTML = newHeader;
 		}
 	};
@@ -260,7 +260,7 @@ var MM = (() => {
 		// remove lockString if set in options.
 		if (options.lockString) {
 			var index = module.lockStrings.indexOf(options.lockString);
-			if ( index !== -1) {
+			if (index !== -1) {
 				module.lockStrings.splice(index, 1);
 			}
 		}
@@ -366,7 +366,7 @@ var MM = (() => {
 		 *
 		 * return array - Filtered collection of modules.
 		 */
-		var exceptWithClass  = className => modulesByClass(className, false);
+		var exceptWithClass = className => modulesByClass(className, false);
 
 		/* modulesByClass(className, include)
 		 * filters a collection of modules based on classname(s).
@@ -424,10 +424,10 @@ var MM = (() => {
 			});
 		};
 
-		if (typeof modules.withClass === "undefined") { Object.defineProperty(modules, "withClass",  {value: withClass, enumerable: false}); }
-		if (typeof modules.exceptWithClass === "undefined") { Object.defineProperty(modules, "exceptWithClass",  {value: exceptWithClass, enumerable: false}); }
-		if (typeof modules.exceptModule === "undefined") { Object.defineProperty(modules, "exceptModule",  {value: exceptModule, enumerable: false}); }
-		if (typeof modules.enumerate === "undefined") { Object.defineProperty(modules, "enumerate",  {value: enumerate, enumerable: false}); }
+		if (typeof modules.withClass === "undefined") { Object.defineProperty(modules, "withClass", { value: withClass, enumerable: false }); }
+		if (typeof modules.exceptWithClass === "undefined") { Object.defineProperty(modules, "exceptWithClass", { value: exceptWithClass, enumerable: false }); }
+		if (typeof modules.exceptModule === "undefined") { Object.defineProperty(modules, "exceptModule", { value: exceptModule, enumerable: false }); }
+		if (typeof modules.enumerate === "undefined") { Object.defineProperty(modules, "enumerate", { value: enumerate, enumerable: false }); }
 	};
 
 	return {
@@ -468,7 +468,7 @@ var MM = (() => {
 		 * argument payload mixed - The payload of the notification.
 		 * argument sender Module - The module that sent the notification.
 		 */
-		sendNotification: function(notification, payload, sender) {
+		sendNotification: function (notification, payload, sender) {
 			if (arguments.length < 3) {
 				Log.error("sendNotification: Missing arguments.");
 				return;
@@ -546,7 +546,7 @@ var MM = (() => {
 // Add polyfill for Object.assign.
 if (typeof Object.assign != "function") {
 	(() => {
-		Object.assign = function(target) {
+		Object.assign = function (target) {
 			"use strict";
 			if (target === undefined || target === null) {
 				throw new TypeError("Cannot convert undefined or null to object");

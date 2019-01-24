@@ -156,14 +156,14 @@ var Module = Class.extend({
 
 	 * @returns Nunjucks Environment
 	 */
-	nunjucksEnvironment: function() {
+	nunjucksEnvironment: function () {
 		if (this._nunjucksEnvironment != null) {
 			return this._nunjucksEnvironment;
 		}
 
 		var self = this;
 
-		this._nunjucksEnvironment = new nunjucks.Environment(new nunjucks.WebLoader(this.file(""), {async: true}), {
+		this._nunjucksEnvironment = new nunjucks.Environment(new nunjucks.WebLoader(this.file(""), { async: true }), {
 			trimBlocks: true,
 			lstripBlocks: true
 		});
@@ -334,7 +334,7 @@ var Module = Class.extend({
      * argument defaultValue string - The default value with variables. (Optional)
 	 */
 	translate: function (key, defaultValueOrVariables, defaultValue) {
-		if(typeof defaultValueOrVariables === "object") {
+		if (typeof defaultValueOrVariables === "object") {
 			return Translator.translate(this, key, defaultValueOrVariables) || defaultValue || "";
 		}
 		return Translator.translate(this, key) || defaultValueOrVariables || "";
@@ -382,35 +382,35 @@ var Module = Class.extend({
 			callback = () => { };
 		}
 
-		callback = callback || () => { };
-		options = options || {};
+		callback = callback || function() { };
+options = options || {};
 
-		var self = this;
-		MM.hideModule(self, speed, () => {
-			self.suspend();
-			callback();
-		}, options);
+var self = this;
+MM.hideModule(self, speed, () => {
+	self.suspend();
+	callback();
+}, options);
 	},
 
-	/* showModule(module, speed, callback)
-	 * Show this module.
-	 *
-	 * argument speed Number - The speed of the show animation.
-	 * argument callback function - Called when the animation is done.
-	 * argument options object - Optional settings for the hide method.
-	 */
-	show: function (speed, callback, options) {
-		if (typeof callback === "object") {
-			options = callback;
-			callback = () => { };
-		}
-
-		callback = callback || () => { };
-		options = options || {};
-
-		this.resume();
-		MM.showModule(this, speed, callback, options);
+/* showModule(module, speed, callback)
+ * Show this module.
+ *
+ * argument speed Number - The speed of the show animation.
+ * argument callback function - Called when the animation is done.
+ * argument options object - Optional settings for the hide method.
+ */
+show: function (speed, callback, options) {
+	if (typeof callback === "object") {
+		options = callback;
+		callback = () => { };
 	}
+
+	callback = callback || function() { };
+	options = options || {};
+
+	this.resume();
+	MM.showModule(this, speed, callback, options);
+}
 });
 
 Module.definitions = {};

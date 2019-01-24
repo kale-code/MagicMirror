@@ -9,18 +9,18 @@ const it = global.it;
 const beforeEach = global.beforeEach;
 const afterEach = global.afterEach;
 
-describe("Clock module", function() {
+describe("Clock module", function () {
 	helpers.setupTimeout(this);
 
 	var app = null;
 
 	beforeEach(() => helpers
-			.startApplication({
-				args: ["js/electron.js"]
-			})
-			.then(startedApp => {
-				app = startedApp;
-			}));
+		.startApplication({
+			args: ["js/electron.js"]
+		})
+		.then(startedApp => {
+			app = startedApp;
+		}));
 
 	afterEach(() => helpers.stopApplication(app));
 
@@ -96,6 +96,6 @@ describe("Clock module", function() {
 		it("shows week with correct number of week of year", () => {
 			it("FIXME: if the day is a sunday this not match");
 			//	const currentWeekNumber = require("current-week-number")();
-			});
+		});
 	});
 });

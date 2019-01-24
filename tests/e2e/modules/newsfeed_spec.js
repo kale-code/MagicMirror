@@ -9,18 +9,18 @@ const it = global.it;
 const beforeEach = global.beforeEach;
 const afterEach = global.afterEach;
 
-describe("Newsfeed module", function() {
+describe("Newsfeed module", function () {
 	helpers.setupTimeout(this);
 
 	var app = null;
 
 	beforeEach(() => helpers
-			.startApplication({
-				args: ["js/electron.js"]
-			})
-			.then(startedApp => {
-				app = startedApp;
-			}));
+		.startApplication({
+			args: ["js/electron.js"]
+		})
+		.then(startedApp => {
+			app = startedApp;
+		}));
 
 	afterEach(() => helpers.stopApplication(app));
 

@@ -15,8 +15,8 @@ describe("ipWhitelist directive configuration", function () {
 	var app = null;
 
 	beforeEach(() => helpers.startApplication({
-			args: ["js/electron.js"]
-		}).then(startedApp => { app = startedApp; }));
+		args: ["js/electron.js"]
+	}).then(startedApp => { app = startedApp; }));
 
 	afterEach(() => helpers.stopApplication(app));
 

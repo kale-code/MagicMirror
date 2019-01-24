@@ -9,7 +9,7 @@ const it = global.it;
 const beforeEach = global.beforeEach;
 const afterEach = global.afterEach;
 
-describe("Development console tests", function() {
+describe("Development console tests", function () {
 	// This tests fail and crash another tests
 	// Suspect problem with window focus
 	// FIXME
@@ -26,12 +26,12 @@ describe("Development console tests", function() {
 
 	describe("Without 'dev' commandline argument", () => {
 		before(() => helpers
-				.startApplication({
-					args: ["js/electron.js"]
-				})
-				.then(startedApp => {
-					app = startedApp;
-				}));
+			.startApplication({
+				args: ["js/electron.js"]
+			})
+			.then(startedApp => {
+				app = startedApp;
+			}));
 
 		after(() => helpers.stopApplication(app));
 
@@ -40,12 +40,12 @@ describe("Development console tests", function() {
 
 	describe("With 'dev' commandline argument", () => {
 		before(() => helpers
-				.startApplication({
-					args: ["js/electron.js", "dev"]
-				})
-				.then(startedApp => {
-					app = startedApp;
-				}));
+			.startApplication({
+				args: ["js/electron.js", "dev"]
+			})
+			.then(startedApp => {
+				app = startedApp;
+			}));
 
 		after(() => helpers.stopApplication(app));
 

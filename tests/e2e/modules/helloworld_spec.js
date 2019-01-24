@@ -9,18 +9,18 @@ const it = global.it;
 const beforeEach = global.beforeEach;
 const afterEach = global.afterEach;
 
-describe("Test helloworld module", function() {
+describe("Test helloworld module", function () {
 	helpers.setupTimeout(this);
 
 	var app = null;
 
 	beforeEach(() => helpers
-			.startApplication({
-				args: ["js/electron.js"]
-			})
-			.then(startedApp => {
-				app = startedApp;
-			}));
+		.startApplication({
+			args: ["js/electron.js"]
+		})
+		.then(startedApp => {
+			app = startedApp;
+		}));
 
 
 	afterEach(() => helpers.stopApplication(app));
@@ -32,7 +32,7 @@ describe("Test helloworld module", function() {
 		});
 
 		it("Test message helloworld module", () => app.client.waitUntilWindowLoaded()
-				.getText(".helloworld").should.eventually.equal("Test HelloWorld Module"));
+			.getText(".helloworld").should.eventually.equal("Test HelloWorld Module"));
 	});
 
 	describe("helloworld default config text", () => {
@@ -42,7 +42,7 @@ describe("Test helloworld module", function() {
 		});
 
 		it("Test message helloworld module", () => app.client.waitUntilWindowLoaded()
-				.getText(".helloworld").should.eventually.equal("Hello World!"));
+			.getText(".helloworld").should.eventually.equal("Hello World!"));
 	});
 
 });

@@ -9,18 +9,18 @@ const it = global.it;
 const beforeEach = global.beforeEach;
 const afterEach = global.afterEach;
 
-describe("Compliments module", function() {
+describe("Compliments module", function () {
 	helpers.setupTimeout(this);
 
 	var app = null;
 
 	beforeEach(() => helpers
-			.startApplication({
-				args: ["js/electron.js"]
-			})
-			.then(startedApp => {
-				app = startedApp;
-			}));
+		.startApplication({
+			args: ["js/electron.js"]
+		})
+		.then(startedApp => {
+			app = startedApp;
+		}));
 
 	afterEach(() => helpers.stopApplication(app));
 
@@ -69,8 +69,8 @@ describe("Compliments module", function() {
 			});
 
 			it("Show anytime because if configure empty parts of day compliments and set anytime compliments", () => app.client.waitUntilWindowLoaded().getText(".compliments").then(text => {
-					expect(text).to.be.oneOf(["Anytime here"]);
-				}));
+				expect(text).to.be.oneOf(["Anytime here"]);
+			}));
 		});
 
 		describe("Only anytime present in configuration compliments", () => {
@@ -80,8 +80,8 @@ describe("Compliments module", function() {
 			});
 
 			it("Show anytime compliments", () => app.client.waitUntilWindowLoaded().getText(".compliments").then(text => {
-					expect(text).to.be.oneOf(["Anytime here"]);
-				}));
+				expect(text).to.be.oneOf(["Anytime here"]);
+			}));
 		});
 	});
 });

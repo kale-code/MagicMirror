@@ -3,7 +3,7 @@
 "use strict";
 
 // Use seperate scope to prevent global scope pollution
-(() => {
+(function () {
 	var config = {};
 
 	// Helper function to get server address/hostname from either the commandline or env
