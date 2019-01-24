@@ -217,7 +217,7 @@ Module.register("newsfeed",{
 		for (var f in this.config.feeds) {
 			var feed = this.config.feeds[f];
 			this.sendSocketNotification("ADD_FEED", {
-				feed: feed,
+				feed,
 				config: this.config
 			});
 		}
