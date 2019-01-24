@@ -40,7 +40,7 @@ module.exports = NodeHelper.create({
 		var self = this;
 
 		if (!validUrl.isUri(url)) {
-			self.sendSocketNotification("INCORRECT_URL", {url: url});
+			self.sendSocketNotification("INCORRECT_URL", {url});
 			return;
 		}
 
@@ -62,7 +62,7 @@ module.exports = NodeHelper.create({
 			fetcher.onError(function(fetcher, error) {
 				self.sendSocketNotification("FETCH_ERROR", {
 					url: fetcher.url(),
-					error: error
+					error
 				});
 			});
 
