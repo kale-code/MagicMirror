@@ -26,9 +26,9 @@ var MMSocket = function(moduleName) {
 		sendMessage: function(notification, payload, sender) {
 			Log.log("Send socket message: " + notification);
 			self.socket.emit("notification", {
-				notification: notification,
-				sender: sender,
-				payload: payload
+				notification,
+				sender,
+				payload
 			});
 		}
 	};
