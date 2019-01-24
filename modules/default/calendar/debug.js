@@ -17,8 +17,8 @@ var user = "magicmirror";
 var pass = "MyStrongPass";
 
 var auth = {
-	user: user,
-	pass: pass
+	user,
+	pass
 };
 
 console.log("Create fetcher ...");
