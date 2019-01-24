@@ -30,8 +30,12 @@ Module.register("weather",{
 		lang: config.language,
 		showHumidity: false,
 		degreeLabel: false,
+		decimalSymbol: ".",
 		showIndoorTemperature: false,
 		showIndoorHumidity: false,
+		maxNumberOfDays: 5,
+		fade: true,
+		fadePoint: 0.25, // Start on 1/4th of the list.
 
 		initialLoadDelay: 0, // 0 seconds delay
 		retryDelay: 2500,
@@ -184,7 +188,9 @@ Module.register("weather",{
 
 		this.nunjucksEnvironment().addFilter("unit", function (value, type) {
 			if (type === "temperature") {
-				value += "°";
+				if (this.config.units === "metric" || this.config.units === "imperial") {
+					value += "°";
+				}
 				if (this.config.degreeLabel) {
 					if (this.config.units === "metric") {
 						value += "C";
@@ -195,11 +201,13 @@ Module.register("weather",{
 					}
 				}
 			} else if (type === "rain") {
-				if (isNaN(value)) {
+				if (isNaN(value) || value === 0) {
 					value = "";
 				} else {
 					value = `${value.toFixed(2)} ${this.config.units === "imperial" ? "in" : "mm"}`;
 				}
+			} else if (type === "humidity") {
+				value += "%"
 			}
 
 			return value;
@@ -207,6 +215,31 @@ Module.register("weather",{
 
 		this.nunjucksEnvironment().addFilter("roundValue", function(value) {
 			return this.roundValue(value);
+		}.bind(this));
+
+		this.nunjucksEnvironment().addFilter("decimalSymbol", function(value) {
+			return value.replace(/\./g, this.config.decimalSymbol);
+		}.bind(this));
+
+		this.nunjucksEnvironment().addFilter("calcNumSteps", function(forecast) {
+			return Math.min(forecast.length, this.config.maxNumberOfDays);
+		}.bind(this));
+
+		this.nunjucksEnvironment().addFilter("opacity", function(currentStep, numSteps) {
+			if (this.config.fade && this.config.fadePoint < 1) {
+				if (this.config.fadePoint < 0) {
+					this.config.fadePoint = 0;
+				}
+				var startingPoint = numSteps * this.config.fadePoint;
+				var numFadesteps = numSteps - startingPoint;
+				if (currentStep >= startingPoint) {
+					return 1 - (currentStep - startingPoint) / numFadesteps;
+				} else {
+					return 1;
+				}
+			} else {
+				return 1;
+			}
 		}.bind(this));
 	}
 });
