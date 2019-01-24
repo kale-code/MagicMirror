@@ -31,7 +31,7 @@ describe("Electron app environment", function() {
 
 	it("should open a browserwindow", () => app.client
 			.waitUntilWindowLoaded()
-			.browserWindow.focus()
+			// .browserWindow.focus()
 			.getWindowCount()
 			.should.eventually.equal(1)
 			.browserWindow.isMinimized()

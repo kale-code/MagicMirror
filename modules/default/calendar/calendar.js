@@ -50,7 +50,7 @@ Module.register("calendar", {
 	},
 
 	// Define required scripts.
-	getStyles: () => ["calendar.css", "font-awesome5.css", "font-awesome5.v4shims.css"],
+	getStyles: () => ["calendar.css", "font-awesome5.css"],
 
 	// Define required scripts.
 	getScripts: () => ["moment.js"],
@@ -216,7 +216,7 @@ Module.register("calendar", {
 			var titleWrapper = document.createElement("td"),
 				repeatingCountTitle = "";
 
-			if (this.config.displayRepeatingCountTitle) {
+			if (this.config.displayRepeatingCountTitle && event.firstYear !== undefined) {
 
 				repeatingCountTitle = this.countTitleForUrl(event.url);
 
