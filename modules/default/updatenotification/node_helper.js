@@ -38,7 +38,7 @@ module.exports = NodeHelper.create({
 						}
 
 						// Folder has .git and has at least one git remote, watch this folder
-						simpleGits.push({"module": mn, "git": git});
+						simpleGits.push({"module": mn, git});
 					});
 				}(moduleName, moduleFolder);
 			}
