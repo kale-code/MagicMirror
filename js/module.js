@@ -382,35 +382,35 @@ var Module = Class.extend({
 			callback = () => { };
 		}
 
-		callback = callback || function() { };
-options = options || {};
+		callback = callback || function () { };
+		options = options || {};
 
-var self = this;
-MM.hideModule(self, speed, () => {
-	self.suspend();
-	callback();
-}, options);
+		var self = this;
+		MM.hideModule(self, speed, () => {
+			self.suspend();
+			callback();
+		}, options);
 	},
 
-/* showModule(module, speed, callback)
- * Show this module.
- *
- * argument speed Number - The speed of the show animation.
- * argument callback function - Called when the animation is done.
- * argument options object - Optional settings for the hide method.
- */
-show: function (speed, callback, options) {
-	if (typeof callback === "object") {
-		options = callback;
-		callback = () => { };
+	/* showModule(module, speed, callback)
+	 * Show this module.
+	 *
+	 * argument speed Number - The speed of the show animation.
+	 * argument callback function - Called when the animation is done.
+	 * argument options object - Optional settings for the hide method.
+	 */
+	show: function (speed, callback, options) {
+		if (typeof callback === "object") {
+			options = callback;
+			callback = () => { };
+		}
+
+		callback = callback || function () { };
+		options = options || {};
+
+		this.resume();
+		MM.showModule(this, speed, callback, options);
 	}
-
-	callback = callback || function() { };
-	options = options || {};
-
-	this.resume();
-	MM.showModule(this, speed, callback, options);
-}
 });
 
 Module.definitions = {};

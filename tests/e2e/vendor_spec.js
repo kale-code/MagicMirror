@@ -18,8 +18,8 @@ describe("Vendors", function () {
 	var app = null;
 
 	before(() => helpers.startApplication({
-			args: ["js/electron.js"]
-		}).then(startedApp => { app = startedApp; }));
+		args: ["js/electron.js"]
+	}).then(startedApp => { app = startedApp; }));
 
 	after(() => helpers.stopApplication(app));
 
