@@ -210,7 +210,7 @@
       'BEGIN' : function(component, params, curr, stack){
           stack.push(curr)
 
-          return {type:component, params:params}
+          return {type:component, params}
         }
 
       , 'END' : function(component, params, curr, stack){
