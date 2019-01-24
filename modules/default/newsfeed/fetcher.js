@@ -55,10 +55,10 @@ var Fetcher = function(url, reloadInterval, encoding, logFeedWarnings) {
 				description = description.toString().replace(regex, "");
 
 				items.push({
-					title: title,
-					description: description,
-					pubdate: pubdate,
-					url: url,
+					title,
+					description,
+					pubdate,
+					url,
 				});
 
 			} else if (logFeedWarnings) {
