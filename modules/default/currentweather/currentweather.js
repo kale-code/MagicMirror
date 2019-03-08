@@ -74,17 +74,13 @@ Module.register("currentweather",{
 	fetchedLocatioName: "",
 
 	// Define required scripts.
-	getScripts: function() {
-		return ["moment.js"];
-	},
+	getScripts: () => ["moment.js"],
 
 	// Define required scripts.
-	getStyles: function() {
-		return ["weather-icons.css", "currentweather.css"];
-	},
+	getStyles: () => ["weather-icons.css", "currentweather.css"],
 
 	// Define required translations.
-	getTranslations: function() {
+	getTranslations: () => {
 		// The translations for the default modules are defined in the core translation files.
 		// Therefor we can just return false. Otherwise we should have returned a dictionary.
 		// If you're trying to build your own module including translations, check out the documentation.
@@ -394,7 +390,7 @@ Module.register("currentweather",{
 		var windInMph = parseFloat(data.wind.speed * 2.23694);
 
 		var tempInF = 0;
-		switch (this.config.units){
+		switch (this.config.units) {
 		case "metric": tempInF = 1.8 * this.temperature + 32;
 			break;
 		case "imperial": tempInF = this.temperature;
@@ -411,7 +407,7 @@ Module.register("currentweather",{
 			var windChillInC = (windChillInF - 32) * (5/9);
 			// this.feelsLike = windChillInC.toFixed(0);
 
-			switch (this.config.units){
+			switch (this.config.units) {
 			case "metric": this.feelsLike = windChillInC.toFixed(0);
 				break;
 			case "imperial": this.feelsLike = windChillInF.toFixed(0);
@@ -431,7 +427,7 @@ Module.register("currentweather",{
 				+ 8.5282*10**-4*tempInF*this.humidity*this.humidity
 				- 1.99*10**-6*tempInF*tempInF*this.humidity*this.humidity;
 
-			switch (this.config.units){
+			switch (this.config.units) {
 			case "metric": this.feelsLike = parseFloat((Hindex - 32) / 1.8).toFixed(0);
 				break;
 			case "imperial": this.feelsLike = Hindex.toFixed(0);
@@ -495,7 +491,7 @@ Module.register("currentweather",{
 		}
 
 		var self = this;
-		setTimeout(function() {
+		setTimeout(() => {
 			self.updateWeather();
 		}, nextLoad);
 	},
@@ -511,7 +507,7 @@ Module.register("currentweather",{
 	 *
 	 * return number - Windspeed in beaufort.
 	 */
-	ms2Beaufort: function(ms) {
+	ms2Beaufort: ms => {
 		var kmh = ms * 60 * 60 / 1000;
 		var speeds = [1, 5, 11, 19, 28, 38, 49, 61, 74, 88, 102, 117, 1000];
 		for (var beaufort in speeds) {
@@ -523,7 +519,7 @@ Module.register("currentweather",{
 		return 12;
 	},
 
-	deg2Cardinal: function(deg) {
+	deg2Cardinal: deg => {
 		if (deg>11.25 && deg<=33.75){
 			return "NNE";
 		} else if (deg > 33.75 && deg <= 56.25) {
