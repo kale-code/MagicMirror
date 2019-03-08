@@ -28,7 +28,7 @@ var originalEnd = ical.objectHandlers['END'];
 ical.objectHandlers['END'] = function(val, params, curr, stack){
   if (curr.rrule) {
     var rule = curr.rrule;
-    if (rule.indexOf('DTSTART') === -1) {
+    if (!rule.includes('DTSTART')) {
 
       if (curr.start.length === 8) {
         var comps = /^(\d{4})(\d{2})(\d{2})$/.exec(curr.start);
