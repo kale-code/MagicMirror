@@ -193,15 +193,15 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 
 							if (endDate.format("x") > now) {
 								newEvents.push({
-									title: title,
+									title,
 									startDate: startDate.format("x"),
 									endDate: endDate.format("x"),
 									fullDayEvent: isFullDayEvent(event),
 									class: event.class,
 									firstYear: event.start.getFullYear(),
-									location: location,
-									geo: geo,
-									description: description
+									location,
+									geo,
+									description
 								});
 							}
 						}
@@ -232,14 +232,14 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 						// Every thing is good. Add it to the list.
 
 						newEvents.push({
-							title: title,
+							title,
 							startDate: startDate.format("x"),
 							endDate: endDate.format("x"),
-							fullDayEvent: fullDayEvent,
+							fullDayEvent,
 							class: event.class,
-							location: location,
-							geo: geo,
-							description: description
+							location,
+							geo,
+							description
 						});
 
 					}
