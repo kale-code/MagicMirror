@@ -85,7 +85,7 @@ var Loader = (function() {
 			var moduleName = elements[elements.length - 1];
 			var moduleFolder =  config.paths.modules + "/" + module;
 
-			if (defaultModules.indexOf(moduleName) !== -1) {
+			if (defaultModules.includes(moduleName)) {
 				moduleFolder =  config.paths.modules + "/default/" + module;
 			}
 
@@ -130,7 +130,7 @@ var Loader = (function() {
 			}
 		};
 
-		if (loadedModuleFiles.indexOf(url) !== -1) {
+		if (loadedModuleFiles.includes(url)) {
 			afterLoad();
 		} else {
 			loadFile(url, function() {
@@ -233,13 +233,13 @@ var Loader = (function() {
 		 */
 		loadFile: function(fileName, module, callback) {
 
-			if (loadedFiles.indexOf(fileName.toLowerCase()) !== -1) {
+			if (loadedFiles.includes(fileName.toLowerCase())) {
 				Log.log("File already loaded: " + fileName);
 				callback();
 				return;
 			}
 
-			if (fileName.indexOf("http://") === 0 || fileName.indexOf("https://") === 0 || fileName.indexOf("/") !== -1) {
+			if (fileName.indexOf("http://") === 0 || fileName.indexOf("https://") === 0 || fileName.includes("/")) {
 				// This is an absolute or relative path.
 				// Load it and then return.
 				loadedFiles.push(fileName.toLowerCase());
