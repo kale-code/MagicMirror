@@ -2,25 +2,23 @@ var ical = require('./ical')
   , request = require('request')
   , fs = require('fs')
 
-exports.fromURL = function(url, opts, cb){
+exports.fromURL = (url, opts, cb) => {
   if (!cb)
     return;
-  request(url, opts, function(err, r, data){
+  request(url, opts, (err, r, data) => {
     if (err)
       return cb(err, null);
     cb(undefined, ical.parseICS(data));
   })
 }
 
-exports.parseFile = function(filename){
-  return ical.parseICS(fs.readFileSync(filename, 'utf8'))
-}
+exports.parseFile = filename => ical.parseICS(fs.readFileSync(filename, 'utf8'))
 
 
 var rrule = require('rrule-alt').RRule
 var rrulestr = rrule.rrulestr
 
-ical.objectHandlers['RRULE'] = function(val, params, curr, stack, line){
+ical.objectHandlers['RRULE'] = (val, params, curr, stack, line) => {
   curr.rrule = line;
   return curr
 }
@@ -47,7 +45,7 @@ ical.objectHandlers['END'] = function(val, params, curr, stack){
     try {
       curr.rrule = rrulestr(rule);
     }
-    catch(err) {
+    catch (err) {
       console.log("Unrecognised element in calendar feed, ignoring: " + rule);
       curr.rrule = null;
     }
