@@ -5,7 +5,7 @@
  * By Christopher Fenner http://github.com/CFenner
  * MIT Licensed.
  */
-var Translator = (function() {
+var Translator = (() => {
 
 	/* loadJSON(file, callback)
 	 * Load a JSON file via XHR.
@@ -17,7 +17,7 @@ var Translator = (function() {
 		var xhr = new XMLHttpRequest();
 		xhr.overrideMimeType("application/json");
 		xhr.open("GET", file, true);
-		xhr.onreadystatechange = function () {
+		xhr.onreadystatechange = () => {
 			if (xhr.readyState === 4 && xhr.status === "200") {
 				callback(JSON.parse(stripComments(xhr.responseText)));
 			}
@@ -130,9 +130,7 @@ var Translator = (function() {
 				if(variables.fallback && !template.match(new RegExp("\{.+\}"))) {
 					template = variables.fallback;
 				}
-				return template.replace(new RegExp("\{([^\}]+)\}", "g"), function(_unused, varName){
-					return variables[varName] || "{"+varName+"}";
-				});
+				return template.replace(new RegExp("\{([^\}]+)\}", "g"), (_unused, varName) => variables[varName] || "{"+varName+"}");
 			}
 
 			if(this.translations[module.name] && key in this.translations[module.name]) {
@@ -174,7 +172,7 @@ var Translator = (function() {
 
 			var self = this;
 			if(!this.translationsFallback[module.name]) {
-				loadJSON(module.file(file), function(json) {
+				loadJSON(module.file(file), json => {
 					if (!isFallback) {
 						self.translations[module.name] = json;
 					} else {
@@ -197,7 +195,7 @@ var Translator = (function() {
 
 			if (lang in translations) {
 				Log.log("Loading core translation file: " + translations[lang]);
-				loadJSON(translations[lang], function(translations) {
+				loadJSON(translations[lang], translations => {
 					self.coreTranslations = translations;
 				});
 			} else {
@@ -220,7 +218,7 @@ var Translator = (function() {
 
 			if (first) {
 				Log.log("Loading core translation fallback file: " + translations[first]);
-				loadJSON(translations[first], function(translations) {
+				loadJSON(translations[first], translations => {
 					self.coreTranslationsFallback = translations;
 				});
 			}
