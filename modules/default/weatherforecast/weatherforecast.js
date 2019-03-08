@@ -220,7 +220,7 @@ Module.register("weatherforecast",{
 		}
 		if (notification === "CALENDAR_EVENTS") {
 			var senderClasses = sender.data.classes.toLowerCase().split(" ");
-			if (senderClasses.indexOf(this.config.calendarClass.toLowerCase()) !== -1) {
+			if (senderClasses.includes(this.config.calendarClass.toLowerCase())) {
 				this.firstEvent = false;
 
 				for (var e in payload) {
