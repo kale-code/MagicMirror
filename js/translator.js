@@ -33,7 +33,7 @@ var Translator = (function() {
 	 *
 	 * return the stripped string.
 	 */
-	function stripComments(str, opts) {
+	function stripComments(str, opts = {}) {
 		// strip comments copied from: https://github.com/sindresorhus/strip-json-comments
 
 		var singleComment = 1;
@@ -46,8 +46,6 @@ var Translator = (function() {
 		function stripWithWhitespace(str, start, end) {
 			return str.slice(start, end).replace(/\S/g, " ");
 		}
-
-		opts = opts || {};
 
 		var currentChar;
 		var nextChar;
