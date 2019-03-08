@@ -80,7 +80,7 @@ var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntri
 				// Otherwise, the recurring events only show the birthday for next year.
 				var isFacebookBirthday = false;
 				if (typeof event.uid !== "undefined") {
-					if (event.uid.indexOf("@facebook.com") !== -1) {
+					if (event.uid.includes("@facebook.com")) {
 						isFacebookBirthday = true;
 					}
 				}
