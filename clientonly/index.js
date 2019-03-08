@@ -60,7 +60,7 @@
 	(config.address && config.port) || fail();
 
 	// Only start the client if a non-local server was provided
-	if (["localhost", "127.0.0.1", "::1", "::ffff:127.0.0.1", undefined].indexOf(config.address) === -1) {
+	if (!["localhost", "127.0.0.1", "::1", "::ffff:127.0.0.1", undefined].includes(config.address)) {
 		getServerConfig(`http://${config.address}:${config.port}/config/`)
 			.then(function (configReturn) {
 				// Pass along the server config via an environment variable
