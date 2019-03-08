@@ -109,7 +109,7 @@ var App = function() {
 		var moduleName = elements[elements.length - 1];
 		var moduleFolder =  __dirname + "/../modules/" + module;
 
-		if (defaultModules.indexOf(moduleName) !== -1) {
+		if (defaultModules.includes(moduleName)) {
 			moduleFolder =  __dirname + "/../modules/default/" + module;
 		}
 
@@ -210,7 +210,7 @@ var App = function() {
 
 			for (var m in config.modules) {
 				var module = config.modules[m];
-				if (modules.indexOf(module.module) === -1 && !module.disabled) {
+				if (!modules.includes(module.module) && !module.disabled) {
 					modules.push(module.module);
 				}
 			}
