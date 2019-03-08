@@ -223,7 +223,7 @@ var MM = (function() {
 		// set lockString if set in options.
 		if (options.lockString) {
 			// Log.log("Has lockstring: " + options.lockString);
-			if (module.lockStrings.indexOf(options.lockString) === -1) {
+			if (!module.lockStrings.includes(options.lockString)) {
 				module.lockStrings.push(options.lockString);
 			}
 		}
@@ -395,7 +395,7 @@ var MM = (function() {
 
 				for (var c in searchClasses) {
 					var searchClass = searchClasses[c];
-					if (classes.indexOf(searchClass.toLowerCase()) !== -1) {
+					if (classes.includes(searchClass.toLowerCase())) {
 						return include;
 					}
 				}
