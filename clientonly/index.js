@@ -65,7 +65,7 @@
 			.then(function (configReturn) {
 				// Pass along the server config via an environment variable
 				var env = Object.create(process.env);
-				var options = { env: env };
+				var options = { env };
 				configReturn.address = config.address;
 				configReturn.port = config.port;
 				env.config = JSON.stringify(configReturn);
