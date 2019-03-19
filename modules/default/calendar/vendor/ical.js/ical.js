@@ -18,8 +18,7 @@
 }('ical', function(){
 
    // Unescape Text re RFC 4.3.11
-  var text = function(t){
-    t = t || "";
+  var text = function(t = ""){
     return (t
       .replace(/\\\,/g, ',')
       .replace(/\\\;/g, ';')
