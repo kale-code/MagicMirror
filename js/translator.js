@@ -116,8 +116,8 @@ var Translator = (() => {
 		 * argument key string - The key of the text to translate.
 		 * argument variables - The variables to use within the translation template (optional)
 		 */
-		translate: function(module, key, variables) {
-			variables = variables || {}; //Empty object by default
+		translate: function(module, key, variables = {}) {
+			//Empty object by default
 
 			// Combines template and variables like:
 			// template: "Please wait for {timeToWait} before continuing with {work}."
